@@ -1,0 +1,25 @@
+{
+  "name": "Utilities for ExpertFlyer",
+  "version": "1.0",
+  "manifest_version": 3,
+  "permissions": ["storage"],
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html", "index.mjs", "lib/lit-all.min.js"],
+      "matches": ["*://*/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.expertflyer.com/flightAlert.do"],
+      "js": ["content_script_utils.js", "alert_form_filler.js"]
+    },
+    {
+      "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do"],
+      "js": ["alert_success.js"]
+    }
+  ],
+  "background": {
+    "service_worker": "alerts_background.mjs"
+  }
+}
