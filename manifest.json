@@ -1,5 +1,6 @@
 {
   "name": "Utilities for ExpertFlyer",
+  "description": "Utilities for automating repetitive manual actions in ExpertFlyer, namely creating flight alerts.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["storage"],
@@ -21,5 +22,8 @@
   ],
   "background": {
     "service_worker": "alerts_background.mjs"
+  },
+  "icons": {
+    "128": "icon.png"
   }
 }
