@@ -12,11 +12,11 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://*.expertflyer.com/flightAlert.do"],
+      "matches": ["https://*.expertflyer.com/flightAlert.do*"],
       "js": ["content_script_utils.js", "alert_form_filler.js"]
     },
     {
-      "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do"],
+      "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
       "js": ["alert_success.js"]
     }
   ],

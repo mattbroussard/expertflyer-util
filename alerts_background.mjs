@@ -29,11 +29,13 @@ let inited = (async () => {
 })();
 
 async function setTabId(id) {
+  console.log("setTabId", id, "old:", tabId);
   tabId = id;
   await chrome.storage.local.set({ "alerts-tabId": id });
 }
 
 async function setCurrentState(state) {
+  console.log("setCurrentState", state, "old:", currentState);
   currentState = state;
   await chrome.storage.local.set({ "alerts-currentState": state });
 }
@@ -57,6 +59,10 @@ async function popNextFormData() {
   }
 
   return { ...testData, alertName: `${testData.alertName} ${popCounter}` };
+}
+
+async function hasNextFormData() {
+  return popCounter < 3;
 }
 
 async function dispatchFormFill() {
@@ -95,6 +101,14 @@ async function onAlertSuccess(tabId_, alertName) {
   }
 
   console.log("successfully scheduled alert", alertName);
+
+  const hasNext = await hasNextFormData();
+  if (!hasNext) {
+    console.log("No more, stopping on success page.");
+    await setCurrentState("idle");
+    return;
+  }
+
   await setCurrentState("waiting_for_form");
 
   // Rate limit
