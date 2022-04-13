@@ -13,11 +13,17 @@
   "content_scripts": [
     {
       "matches": ["https://*.expertflyer.com/flightAlert.do*"],
-      "js": ["content_script_utils.js", "alert_form_filler.js"]
+      "js": [
+        "content_script_utils.js",
+        "alert_form_filler.js",
+        "alert_iframe.js"
+      ],
+      "css": ["alert_iframe.css"]
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
-      "js": ["alert_success.js"]
+      "js": ["alert_success.js", "alert_iframe.js"],
+      "css": ["alert_iframe.css"]
     }
   ],
   "background": {
