@@ -29,6 +29,7 @@ export class NewAlertForm extends LitElement {
   static styles = css`
     input {
       font-family: monospace;
+      text-transform: uppercase;
     }
   `;
 
