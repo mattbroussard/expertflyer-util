@@ -1,7 +1,7 @@
 {
   "name": "Utilities for ExpertFlyer",
   "description": "Utilities for automating repetitive manual actions in ExpertFlyer, namely creating flight alerts.",
-  "version": "1.0",
+  "version": "0.1",
   "manifest_version": 3,
   "permissions": ["storage"],
   "web_accessible_resources": [
