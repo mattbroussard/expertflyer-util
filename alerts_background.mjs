@@ -86,6 +86,13 @@ async function dispatchFormFill() {
     { type: "ef-alert-fill-and-submit", data },
     { frameId: 0 /* root frame only */ }
   );
+}
+
+async function onSubmitted() {
+  if (currentState != "waiting_for_submit") {
+    console.warn("onSubmitted in unexpected state", currentState);
+    return;
+  }
   await setCurrentState("waiting_for_success");
 }
 
@@ -126,7 +133,7 @@ async function rateLimit() {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
-chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
+async function onMessage(message, sender) {
   if (!sender.tab) {
     return;
   }
@@ -139,6 +146,8 @@ chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
   } else if (type == "ef-alert-form-not-ready") {
     console.warn("got form not ready error, aborting");
     await setCurrentState("error");
+  } else if (type == "ef-alert-submitted") {
+    await onSubmitted();
   } else if (type == "ef-alert-success") {
     await onAlertSuccess(sender.tab.id, message.alertName);
   } else if (type == "ef-alert-fail") {
@@ -154,6 +163,13 @@ chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
     console.log("Received call to stop queue");
     await setCurrentState("idle");
   }
+}
+
+chrome.runtime.onMessage.addListener((message, sender, reply) => {
+  onMessage(message, sender);
+
+  // We don't use the reply, but seem to get a console error if there is never any reply
+  reply({});
 });
 
 chrome.storage.onChanged.addListener((changes, areaName) => {

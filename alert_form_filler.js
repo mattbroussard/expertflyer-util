@@ -63,17 +63,14 @@ async function fillAndSubmit(data) {
 function onLoad() {
   if (isReady()) {
     chrome.runtime.onMessage.addListener((message, sender, reply) => {
-      if (sender.tab) {
-        return;
-      }
-      if (message.type == "ef-alert-fill-and-submit") {
+      if (!sender.tab && message.type == "ef-alert-fill-and-submit") {
         fillAndSubmit(message.data).then(() =>
-          reply({ type: "ef-alert-submitted" })
+          chrome.runtime.sendMessage({ type: "ef-alert-submitted" })
         );
-
-        // return true signals that we will reply async
-        return true;
       }
+
+      // We don't use the reply, but seem to get a console error if there is never any reply
+      reply({});
     });
 
     chrome.runtime.sendMessage({ type: "ef-alert-form-ready" });
