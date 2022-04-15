@@ -78,17 +78,10 @@ export class NewAlertForm extends LitElement {
     return new Date(this.endDateInput.value.value);
   }
 
-  swapDates() {
-    const start = this.startDateInput.value.value;
-    const end = this.endDateInput.value.value;
-    this.startDateInput.value.value = end;
-    this.endDateInput.value.value = start;
-  }
-
   dateChanged() {
     if (isValidDate(this.startDate) && isValidDate(this.endDate)) {
       if (this.startDate > this.endDate) {
-        this.swapDates();
+        this.endDateInput.value.value = this.startDateInput.value.value;
       }
 
       this.days = computeDays(this.startDate, this.endDate);

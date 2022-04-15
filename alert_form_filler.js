@@ -50,7 +50,7 @@ function submitForm() {
 
 async function fillAndSubmit(data) {
   fillFields(data);
-  await wait(1000);
+  await wait(750);
   submitForm();
 }
 

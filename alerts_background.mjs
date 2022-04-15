@@ -1,16 +1,5 @@
 const formUrl = "https://www.expertflyer.com/flightAlert.do";
 
-const testData = {
-  alertName: "test alert",
-  departingAirport: "SFO",
-  arrivingAirport: "NRT",
-  date: "5/1/22",
-  airline: "UA",
-  flightNumber: 837,
-  quantity: 1,
-  classCode: "I",
-};
-
 // state machine:
 //  - idle
 //  - waiting_for_form
@@ -18,14 +7,17 @@ const testData = {
 //  - waiting_for_success
 let currentState = null;
 let tabId = null;
+let queue = null;
 
 let inited = (async () => {
   const storageData = await chrome.storage.local.get([
     "alerts-currentState",
     "alerts-tabId",
+    "alerts-alertQueue",
   ]);
   currentState = storageData["alerts-currentState"] || "idle";
   tabId = storageData["alerts-tabId"] || null;
+  queue = storageData["alerts-alertQueue"] || [];
 })();
 
 async function setTabId(id) {
@@ -51,18 +43,21 @@ async function onFormReady(tabId_) {
   await dispatchFormFill();
 }
 
-let popCounter = 0;
 async function popNextFormData() {
-  popCounter++;
-  if (popCounter > 3) {
-    return null;
+  await inited;
+  if (queue.length == 0) {
+    return 0;
   }
 
-  return { ...testData, alertName: `${testData.alertName} ${popCounter}` };
+  const entry = queue.shift();
+  await chrome.storage.local.set({ "alerts-alertQueue": queue });
+
+  return entry;
 }
 
 async function hasNextFormData() {
-  return popCounter < 3;
+  await inited;
+  return queue.length > 0;
 }
 
 async function dispatchFormFill() {
@@ -119,7 +114,8 @@ async function onAlertSuccess(tabId_, alertName) {
 }
 
 async function rateLimit() {
-  const timeout = 5000;
+  // Random wait between 1-3 seconds
+  const timeout = Math.round(Math.random() * 2000) + 1000;
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
@@ -150,6 +146,17 @@ chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
   } else if (type == "ef-alert-stop-queue") {
     console.log("Received call to stop queue");
     await setCurrentState("idle");
+  }
+});
+
+chrome.storage.onChanged.addListener((changes, areaName) => {
+  if (areaName != "local") {
+    return;
+  }
+  for (const [key, { newValue }] of Object.entries(changes)) {
+    if (key == "alerts-alertQueue") {
+      queue = newValue;
+    }
   }
 });
 
