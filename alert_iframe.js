@@ -10,6 +10,17 @@ function insertIframe() {
   iframe.src = url;
   iframe.className = "ef-util-alert-iframe";
   container.appendChild(iframe);
+
+  iFrameResize(
+    {
+      autoResize: true,
+      minHeight: 500,
+      resizeFrom: "child",
+      checkOrigin: false,
+      scrolling: "omit",
+    },
+    iframe
+  );
 }
 
 insertIframe();

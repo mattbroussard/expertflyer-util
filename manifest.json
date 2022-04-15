@@ -14,6 +14,7 @@
     {
       "matches": ["https://*.expertflyer.com/flightAlert.do*"],
       "js": [
+        "lib/iframeResizer.min.js",
         "content_script_utils.js",
         "alert_form_filler.js",
         "alert_iframe.js"
@@ -22,7 +23,7 @@
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
-      "js": ["alert_success.js", "alert_iframe.js"],
+      "js": ["lib/iframeResizer.min.js", "alert_success.js", "alert_iframe.js"],
       "css": ["alert_iframe.css"]
     }
   ],

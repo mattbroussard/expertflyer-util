@@ -2,5 +2,5 @@
   width: 100%;
   border: none;
   margin-top: 15px;
-  height: 500px;
+  min-height: 500px;
 }
