@@ -1,5 +1,7 @@
 import { LitElement, html, css } from "./lib/lit-all.min.js";
 import { ChromeStorageController } from "./chrome_storage_controller.mjs";
+import "./alert_queue_table.mjs";
+import "./new_alert_form.mjs";
 // prev "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
 
 const testData = {
@@ -116,6 +118,8 @@ class MyElement extends LitElement {
                 html`<li><pre>${JSON.stringify(entry, undefined, 2)}</pre></li>`
             )}
         </ul>
+        <ef-utils-new-alert-form></ef-utils-new-alert-form>
+        <ef-utils-alert-queue-table></ef-utils-alert-queue-table>
       </div>
     `;
   }
