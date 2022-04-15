@@ -38,6 +38,12 @@ function fillFields(data) {
   const quantity = data.quantity || 1;
   qtyField.value = quantity;
 
+  const quantityMode = data.quantityMode || 1;
+  const quantityRadio = form.querySelector(
+    `input[type="radio"][value="${quantityMode}"]`
+  );
+  quantityRadio.checked = true;
+
   // Other fields: lt/gt mode, test email, point of sale
 }
 

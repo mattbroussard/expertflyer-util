@@ -67,7 +67,8 @@ export class NewAlertForm extends LitElement {
       isValidDate(this.startDate) &&
       isValidDate(this.endDate) &&
       this.endDate >= this.startDate &&
-      this.renderRoot.querySelector("#classCode").value.length == 1;
+      this.renderRoot.querySelector("#classCode").value.length == 1 &&
+      ["1", "2"].includes(this.renderRoot.querySelector("#quantityMode").value);
   }
 
   get startDate() {
@@ -101,6 +102,9 @@ export class NewAlertForm extends LitElement {
         .querySelector("#classCode")
         .value.toUpperCase(),
       quantity: Number(this.renderRoot.querySelector("#quantity").value),
+      quantityMode: Number(
+        this.renderRoot.querySelector("#quantityMode").value
+      ),
       batchId: newRandomId(),
     };
     const entries = [];
@@ -123,8 +127,14 @@ export class NewAlertForm extends LitElement {
         arrivingAirport,
         classCode,
         quantity,
+        quantityMode,
       } = data;
-      const quantityStr = quantity > 1 ? ` x${quantity}` : "";
+      const quantityStr =
+        quantityMode == 2
+          ? `<${quantity}`
+          : quantity > 1
+          ? ` x${quantity}`
+          : "";
       const alertName = `${airline}${flightNumber} ${departingAirport}-${arrivingAirport} ${
         dateObj.getUTCMonth() + 1
       }/${dateObj.getUTCDate()} ${classCode}${quantityStr}`;
@@ -180,9 +190,9 @@ export class NewAlertForm extends LitElement {
         id="classCode"
         @input=${this.validate}
       />
-      <select disabled>
-        <option checked>&ge;</option>
-        <option>&lt;</option>
+      <select id="quantityMode">
+        <option value="1" checked>&ge;</option>
+        <option value="2">&lt;</option>
       </select>
       <input
         type="number"

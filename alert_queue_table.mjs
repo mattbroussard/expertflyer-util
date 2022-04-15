@@ -42,7 +42,10 @@ export class AlertQueueTable extends LitElement {
                   ${alert.departingAirport}-${alert.arrivingAirport}
                 </td>
                 <td>${alert.date}</td>
-                <td>${alert.classCode} &ge; ${alert.quantity}</td>
+                <td>
+                  ${alert.classCode} ${alert.quantityMode == 2 ? "<" : "≥"}
+                  ${alert.quantity}
+                </td>
                 <td>
                   <button @click=${this.deleteEntry(alert, i)}>❌</button>
                   ${when(
