@@ -1,5 +1,17 @@
-import { LitElement, html } from "./lib/lit-all.min.js";
+import { LitElement, html, css } from "./lib/lit-all.min.js";
+import { ChromeStorageController } from "./chrome_storage_controller.mjs";
 // prev "https://cdn.jsdelivr.net/gh/lit/dist@2/all/lit-all.min.js";
+
+const testData = {
+  alertName: "test alert",
+  departingAirport: "SFO",
+  arrivingAirport: "NRT",
+  date: "5/1/22",
+  airline: "UA",
+  flightNumber: 837,
+  quantity: 1,
+  classCode: "I",
+};
 
 class ValidatedInput extends LitElement {
   static properties = {
@@ -73,6 +85,17 @@ class MyElement extends LitElement {
   // @property({type: Boolean})
   // enabled = false;
 
+  entries = new ChromeStorageController(this, "dummy_data1", []);
+  addNewData() {
+    this.entries.set([...this.entries.get(), testData]);
+  }
+
+  static styles = css`
+    #storage-test {
+      border: 1px solid black;
+    }
+  `;
+
   render() {
     return html`
       <p>Hello style!</p>
@@ -82,6 +105,18 @@ class MyElement extends LitElement {
       <validated-input
         .validator=${singleFlightSpecValidator}
       ></validated-input>
+      <div id="storage-test">
+        <button @click=${this.addNewData}>add row</button>
+        entry count: ${this.entries.get().length}
+        <ul>
+          ${this.entries
+            .get()
+            .map(
+              (entry) =>
+                html`<li><pre>${JSON.stringify(entry, undefined, 2)}</pre></li>`
+            )}
+        </ul>
+      </div>
     `;
   }
 }
