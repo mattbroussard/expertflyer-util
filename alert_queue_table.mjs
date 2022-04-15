@@ -2,7 +2,7 @@ import { LitElement, html, css, when } from "./lib/lit-all.min.js";
 import { ChromeStorageController } from "./chrome_storage_controller.mjs";
 
 export class AlertQueueTable extends LitElement {
-  alerts = new ChromeStorageController(this, "dummy_data1", []);
+  alerts = new ChromeStorageController(this, "alerts-alertQueue", []);
 
   static styles = css`
     th {

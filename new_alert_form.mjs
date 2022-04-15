@@ -11,7 +11,7 @@ function computeDays(a, b) {
 }
 
 export class NewAlertForm extends LitElement {
-  entries = new ChromeStorageController(this, "dummy_data1", []);
+  entries = new ChromeStorageController(this, "alerts-alertQueue", []);
   startDateInput = createRef();
   endDateInput = createRef();
 

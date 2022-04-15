@@ -1,16 +1,5 @@
 const expectedUrl = "https://www.expertflyer.com/flightAlert.do";
 
-const testData = {
-  alertName: "test alert",
-  departingAirport: "SFO",
-  arrivingAirport: "NRT",
-  date: "5/1/22",
-  airline: "UA",
-  flightNumber: 837,
-  quantity: 1,
-  classCode: "I",
-};
-
 function isReady() {
   const form = document.querySelector("form#flightAlertForm");
   return (

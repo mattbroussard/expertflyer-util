@@ -141,6 +141,15 @@ chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
   } else if (type == "ef-alert-fail") {
     console.warn("got alert scheduling error, aborting");
     await setCurrentState("idle");
+  } else if (type == "ef-alert-start-queue") {
+    console.log("Received call to start queue");
+    await setCurrentState("waiting_for_form");
+    if (tabId && tabId == sender.tab.id) {
+      await onFormReady(tabId);
+    }
+  } else if (type == "ef-alert-stop-queue") {
+    console.log("Received call to stop queue");
+    await setCurrentState("idle");
   }
 });
 
