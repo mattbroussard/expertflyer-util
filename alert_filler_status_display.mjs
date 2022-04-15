@@ -25,6 +25,8 @@ export class AlertFillerStatusDisplay extends LitElement {
         return "Filled form, waiting to submit";
       case "waiting_for_success":
         return "Submitted, waiting for result";
+      case "error":
+        return "Some error occurred; check extension ServiceWorker log + load new alert page again";
       default:
         return this.currentState.get();
     }

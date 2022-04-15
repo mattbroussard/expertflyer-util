@@ -5,6 +5,7 @@ const formUrl = "https://www.expertflyer.com/flightAlert.do";
 //  - waiting_for_form
 //  - waiting_for_submit
 //  - waiting_for_success
+//  - error
 let currentState = null;
 let tabId = null;
 let queue = null;
@@ -37,6 +38,12 @@ async function onFormReady(tabId_) {
 
   if (currentState != "waiting_for_form") {
     console.log("got form ready event in unexpected state", currentState);
+
+    if (currentState == "error") {
+      console.log("Resetting from error to idle");
+      await setCurrentState("idle");
+    }
+
     return;
   }
 
@@ -114,8 +121,8 @@ async function onAlertSuccess(tabId_, alertName) {
 }
 
 async function rateLimit() {
-  // Random wait between 1-3 seconds
-  const timeout = Math.round(Math.random() * 2000) + 1000;
+  // Random wait between 2-4 seconds
+  const timeout = Math.round(Math.random() * 2000) + 2000;
   return new Promise((resolve) => setTimeout(resolve, timeout));
 }
 
@@ -131,12 +138,12 @@ chrome.runtime.onMessage.addListener(async (message, sender, reply) => {
     await onFormReady(sender.tab.id);
   } else if (type == "ef-alert-form-not-ready") {
     console.warn("got form not ready error, aborting");
-    await setCurrentState("idle");
+    await setCurrentState("error");
   } else if (type == "ef-alert-success") {
     await onAlertSuccess(sender.tab.id, message.alertName);
   } else if (type == "ef-alert-fail") {
     console.warn("got alert scheduling error, aborting");
-    await setCurrentState("idle");
+    await setCurrentState("error");
   } else if (type == "ef-alert-start-queue") {
     console.log("Received call to start queue");
     await setCurrentState("waiting_for_form");
