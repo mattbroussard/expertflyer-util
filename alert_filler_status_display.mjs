@@ -32,6 +32,12 @@ export class AlertFillerStatusDisplay extends LitElement {
     }
   }
 
+  get isOnSuccessPage() {
+    const params = new URLSearchParams(window.location.search);
+    const parent = params.get("parent");
+    return parent == "/flightAlertSaveVerification.do";
+  }
+
   start(evt) {
     if (this.entries.get().length < 1) {
       alert("Can't start with an empty queue.");
@@ -48,6 +54,19 @@ export class AlertFillerStatusDisplay extends LitElement {
   }
 
   render() {
+    const state = this.currentState.get();
+    let kickHint = undefined;
+    if (state == "waiting_for_form" && this.isOnSuccessPage) {
+      kickHint = html`
+        <h3>
+          Been stuck on this page for too long? Chrome has a bug;
+          <a href="https://www.expertflyer.com/flightAlert.do" target="_parent"
+            >try this</a
+          >.
+        </h3>
+      `;
+    }
+
     return html`
       <div id="container">
         <h2 id="status">
@@ -58,6 +77,7 @@ export class AlertFillerStatusDisplay extends LitElement {
             () => html`<button @click=${this.stop}>Stop</button>`
           )}
         </h2>
+        ${kickHint}
       </div>
     `;
   }

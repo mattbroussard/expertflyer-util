@@ -5,7 +5,9 @@ function insertIframe() {
     return;
   }
 
-  const url = chrome.runtime.getURL("index.html");
+  const url =
+    chrome.runtime.getURL("index.html") +
+    `?parent=${encodeURIComponent(window.location.pathname)}`;
   const iframe = document.createElement("iframe");
   iframe.src = url;
   iframe.className = "ef-util-alert-iframe";
