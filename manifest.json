@@ -40,7 +40,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["depaginate.js"],
+      "resources": ["depaginate.js", "index.html"],
       "matches": ["https://*.expertflyer.com/*"]
     }
   ]
