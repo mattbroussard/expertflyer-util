@@ -1,7 +1,7 @@
 {
   "name": "Utilities for ExpertFlyer",
   "description": "Utilities for automating repetitive manual actions in ExpertFlyer, namely creating flight alerts.",
-  "version": "0.1",
+  "version": "0.2",
   "manifest_version": 3,
   "permissions": ["storage"],
   "web_accessible_resources": [
@@ -25,6 +25,11 @@
       "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
       "js": ["lib/iframeResizer.min.js", "alert_success.js", "alert_iframe.js"],
       "css": ["alert_iframe.css"]
+    },
+    {
+      "matches": ["https://*.expertflyer.com/flightAlertList.do"],
+      "js": ["inject_scripts.js", "inject_depaginate.js"],
+      "css": ["depaginate.css"]
     }
   ],
   "background": {
@@ -32,5 +37,11 @@
   },
   "icons": {
     "128": "icon.png"
-  }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["depaginate.js"],
+      "matches": ["https://*.expertflyer.com/*"]
+    }
+  ]
 }

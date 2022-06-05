@@ -29,3 +29,8 @@ For this simple browser extension I wanted to avoid the need for any compilation
 This extension is not affiliated with ExpertFlyer. Open source libraries [Lit](https://lit.dev/) and [iFrame Resizer](https://github.com/davidjbradshaw/iframe-resizer) are used.
 
 This extension is provided "AS IS". The developer makes no warranties, express or implied, and hereby disclaims all implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose.
+
+## Version history
+
+- 0.1: initial release with support for creating flight alerts in bulk
+- 0.2: adds ability to de-paginate the alerts list
