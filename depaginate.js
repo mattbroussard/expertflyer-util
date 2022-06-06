@@ -27,7 +27,10 @@
     return obj;
   }
 
-  function buildDepaginatorButton(paginator) {
+  function buildDepaginatorButton(
+    // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Paginator.html
+    paginator
+  ) {
     const btn = document.createElement("button");
     btn.innerText = "Depaginate";
     btn.className = "ef-utils-depaginate-button";
@@ -40,6 +43,7 @@
 
   function addDepaginatorButtons() {
     for (const { varName, selector } of paginators) {
+      // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Paginator.html
       const paginator = getObject(varName);
       const element = document.querySelector(selector);
       if (!paginator || !element) {

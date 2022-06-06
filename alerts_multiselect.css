@@ -1,0 +1,4 @@
+#flightAlertListDataTable .yui-dt-col-lookingFor .yui-dt-liner {
+  /* default width is 270px, we need to make room for checkbox column */
+  width: 220px !important;
+}

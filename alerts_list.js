@@ -1,1 +1,1 @@
-injectScripts(["depaginate.js"]);
+injectScripts(["depaginate.js", "alerts_multiselect.js"]);

@@ -29,7 +29,7 @@
     {
       "matches": ["https://*.expertflyer.com/flightAlertList.do"],
       "js": ["inject_scripts.js", "alerts_list.js"],
-      "css": ["depaginate.css"]
+      "css": ["depaginate.css", "alerts_multiselect.css"]
     }
   ],
   "background": {
@@ -40,7 +40,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["depaginate.js", "index.html"],
+      "resources": ["depaginate.js", "alerts_multiselect.js", "index.html"],
       "matches": ["https://*.expertflyer.com/*"]
     }
   ]
