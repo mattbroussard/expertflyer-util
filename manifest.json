@@ -42,6 +42,7 @@
     {
       "resources": [
         "lib/lit-all.min.js",
+        "disable_lit_warning.js",
         "depaginate.js",
         "alerts_multiselect.mjs",
         "index.html"
