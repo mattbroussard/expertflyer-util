@@ -40,7 +40,12 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["depaginate.js", "alerts_multiselect.mjs", "index.html"],
+      "resources": [
+        "lib/lit-all.min.js",
+        "depaginate.js",
+        "alerts_multiselect.mjs",
+        "index.html"
+      ],
       "matches": ["https://*.expertflyer.com/*"]
     }
   ]
