@@ -33,4 +33,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 ## Version history
 
 - 0.1: initial release with support for creating flight alerts in bulk
-- 0.2: adds ability to de-paginate the alerts list
+- 0.2: adds ability to de-paginate the alerts list and delete alerts in bulk

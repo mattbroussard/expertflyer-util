@@ -47,6 +47,7 @@
         "alerts_multiselect.mjs",
         "alerts_delete_button.mjs",
         "alerts_multiselect_checkbox.mjs",
+        "random_ids.mjs",
         "index.html"
       ],
       "matches": ["https://*.expertflyer.com/*"]

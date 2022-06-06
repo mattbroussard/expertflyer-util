@@ -1,9 +1,12 @@
-import { LitElement, html, css } from "./lib/lit-all.min.js";
+import { LitElement, html, css, createRef, ref } from "./lib/lit-all.min.js";
+import { newRandomId } from "./random_ids.mjs";
 
 export class DeleteAlertsButton extends LitElement {
   static properties = {
     message: { state: true },
   };
+
+  queueCheckbox = createRef();
 
   constructor() {
     super();
@@ -20,6 +23,7 @@ export class DeleteAlertsButton extends LitElement {
     }
 
     const params = selected.map((check) => {
+      // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Record.html
       const record = check.yuiRecord;
       const alertId = record.getData("bean").alertId;
       const alertName = record.getData("bean").name;
@@ -28,6 +32,33 @@ export class DeleteAlertsButton extends LitElement {
       // Params for EF's deleteAlert function
       return [alertId, alertName, alertType];
     });
+
+    if (this.queueCheckbox.value.checked) {
+      const batchId = newRandomId();
+      const queueEntries = selected.map((check) => {
+        // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Record.html
+        const record = check.yuiRecord;
+        const bean = record.getData("bean");
+        return {
+          airline: bean.airlineCode,
+          flightNumber: Number(bean.flightNumber),
+          departingAirport: record.getData("departAirportCode"),
+          arrivingAirport: record.getData("arriveAirportCode"),
+          classCode: bean.classCode,
+          quantity: bean.quantity,
+          quantityMode: bean.quantityOperator.code,
+          date: record.getData("departureDate"),
+          alertName: bean.name,
+          id: newRandomId(),
+          batchId,
+        };
+      });
+
+      window.postMessage(
+        { type: "ef-util-add-alerts-to-queue", alerts: queueEntries },
+        "*"
+      );
+    }
 
     // Async, not awaited; errors handled internally
     this.processDeletions(params);
@@ -104,12 +135,19 @@ export class DeleteAlertsButton extends LitElement {
     button {
       margin-left: 5px;
     }
+    label {
+      user-select: none;
+    }
   `;
 
   render() {
-    return html`<button @click=${this.onClick} ?disabled=${!!this.message}>
-      ${this.message || "Delete selected"}
-    </button>`;
+    return html`
+      <button @click=${this.onClick} ?disabled=${!!this.message}>
+        ${this.message || "Delete selected"}
+      </button>
+      <input type="checkbox" id="queueCheck" ${ref(this.queueCheckbox)} />
+      <label for="queueCheck">When deleting, add back to EFUtils queue</label>
+    `;
   }
 }
 customElements.define("ef-utils-alert-delete-button", DeleteAlertsButton);
