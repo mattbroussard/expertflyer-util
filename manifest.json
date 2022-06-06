@@ -4,12 +4,6 @@
   "version": "0.2",
   "manifest_version": 3,
   "permissions": ["storage"],
-  "web_accessible_resources": [
-    {
-      "resources": ["index.html", "index.mjs", "lib/lit-all.min.js"],
-      "matches": ["*://*/*"]
-    }
-  ],
   "content_scripts": [
     {
       "matches": ["https://*.expertflyer.com/flightAlert.do*"],
@@ -48,7 +42,8 @@
         "alerts_delete_button.mjs",
         "alerts_multiselect_checkbox.mjs",
         "random_ids.mjs",
-        "index.html"
+        "index.html",
+        "index.mjs"
       ],
       "matches": ["https://*.expertflyer.com/*"]
     }
