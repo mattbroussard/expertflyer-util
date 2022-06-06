@@ -45,6 +45,8 @@
         "disable_lit_warning.js",
         "depaginate.js",
         "alerts_multiselect.mjs",
+        "alerts_delete_button.mjs",
+        "alerts_multiselect_checkbox.mjs",
         "index.html"
       ],
       "matches": ["https://*.expertflyer.com/*"]
