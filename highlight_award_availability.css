@@ -1,0 +1,21 @@
+.ef-utils-award-avail-highlight {
+  font-weight: bold;
+}
+
+.ef-utils-award-avail-1 {
+  background-color: #78ff87;
+}
+
+.ef-utils-award-avail-2 {
+  background-color: #56ff69;
+}
+
+.ef-utils-award-avail-3 {
+  background-color: #00f01b;
+}
+
+.ef-utils-award-avail-yes,
+.ef-utils-award-avail-4 {
+  background-color: #00ad14;
+  color: white;
+}

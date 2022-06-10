@@ -6,7 +6,7 @@ Utilities for automating repetitive manual actions in [ExpertFlyer](https://www.
 
 Note: This extension is not affiliated with ExpertFlyer.
 
-## How to use
+## How to use: Bulk Alerts
 
 1. Login to [ExpertFlyer](https://www.expertflyer.com/), then click [Create New Flight Alert](https://www.expertflyer.com/flightAlert.do).
 
@@ -15,6 +15,14 @@ Note: This extension is not affiliated with ExpertFlyer.
 3. Click Start, then don't touch or open other ExpertFlyer tabs until the runner is done.
 
 Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The extension will not stop you from trying to make more than 200 extensions, though it does rate limit the form submissions.
+
+## Other features
+
+- A "Depaginate" button appears the bottom of paginated flight alert lists. This removes pagination and shows everything on one page.
+- Flight alerts can be selected with a checkbox on the right side, then deleted in bulk.
+  - Optionally, deleted alerts can be re-added back to the queue used by the bulk adding feature described above.
+  - You can shift-click to select a range of consecutive rows
+- Rows with "Yes" or non-zero availability are highlighted in green for easier visual identification on the Awards & Upgrades search page.
 
 ## Troubleshooting
 
@@ -34,3 +42,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 
 - 0.1: initial release with support for creating flight alerts in bulk
 - 0.2: adds ability to de-paginate the alerts list and delete alerts in bulk
+- 0.3: adds highlighting of "yes" rows in award availability search

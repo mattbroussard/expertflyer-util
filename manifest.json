@@ -1,7 +1,7 @@
 {
   "name": "Utilities for ExpertFlyer",
-  "description": "Utilities for automating repetitive manual actions in ExpertFlyer, namely creating flight alerts.",
-  "version": "0.2",
+  "description": "Various utilities that make ExpertFlyer easier to use for power users.",
+  "version": "0.3",
   "manifest_version": 3,
   "permissions": ["storage"],
   "content_scripts": [
@@ -24,6 +24,11 @@
       "matches": ["https://*.expertflyer.com/flightAlertList.do"],
       "js": ["inject_scripts.js", "alerts_list.js"],
       "css": ["depaginate.css", "alerts_multiselect.css"]
+    },
+    {
+      "matches": ["https://*.expertflyer.com/air/awardUpgradeResults.do"],
+      "js": ["highlight_award_availability.js"],
+      "css": ["highlight_award_availability.css"]
     }
   ],
   "background": {
