@@ -1,5 +1,6 @@
 import { LitElement, html, css, when } from "./lib/lit-all.min.js";
 import { ChromeStorageController } from "./chrome_storage_controller.mjs";
+import "./alert_queue_import_export_buttons.mjs";
 
 export class AlertQueueTable extends LitElement {
   alerts = new ChromeStorageController(this, "alerts-alertQueue", []);
@@ -18,6 +19,9 @@ export class AlertQueueTable extends LitElement {
     td {
       padding-right: 10px;
     }
+    #buttons {
+      margin-bottom: 3px;
+    }
   `;
 
   render() {
@@ -25,6 +29,11 @@ export class AlertQueueTable extends LitElement {
     return html`
       <div id="container">
         <h2 id="queue_heading">Queued to Add (${alerts.length})</h2>
+        <div id="buttons">
+          <ef-export-alert-queue-button></ef-export-alert-queue-button>
+          <ef-import-alert-queue-button></ef-import-alert-queue-button>
+          <button @click=${this.clearQueue}>Clear Queue</button>
+        </div>
         <table>
           <tbody>
             <tr>
@@ -48,6 +57,7 @@ export class AlertQueueTable extends LitElement {
                 </td>
                 <td>
                   <button @click=${this.deleteEntry(alert, i)}>❌</button>
+                  <button @click=${this.copyJson(alert)}>Copy JSON</button>
                   ${when(
                     alert.batchId,
                     () => html`<button
@@ -80,5 +90,20 @@ export class AlertQueueTable extends LitElement {
       this.alerts.get().filter((alert) => alert.batchId != batchId)
     );
   };
+
+  copyJson = (alert) => () => {
+    navigator.clipboard.writeText(
+      JSON.stringify(
+        // We wrap in an array so same JSON can be used with "import json" button that expects a list
+        [alert],
+        undefined,
+        2
+      )
+    );
+  };
+
+  clearQueue() {
+    this.alerts.set([]);
+  }
 }
 customElements.define("ef-utils-alert-queue-table", AlertQueueTable);

@@ -43,3 +43,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.1: initial release with support for creating flight alerts in bulk
 - 0.2: adds ability to de-paginate the alerts list and delete alerts in bulk
 - 0.3: adds highlighting of "yes" rows in award availability search
+- 0.4: add import/export buttons for alerts queue

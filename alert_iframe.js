@@ -11,6 +11,7 @@ function insertIframe() {
   const iframe = document.createElement("iframe");
   iframe.src = url;
   iframe.className = "ef-util-alert-iframe";
+  iframe.allow = "clipboard-read; clipboard-write";
   container.appendChild(iframe);
 
   iFrameResize(
