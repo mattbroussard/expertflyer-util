@@ -31,6 +31,9 @@ export class NewAlertForm extends LitElement {
       font-family: monospace;
       text-transform: uppercase;
     }
+    div.row {
+      margin-bottom: 5px;
+    }
   `;
 
   constructor() {
@@ -155,54 +158,60 @@ export class NewAlertForm extends LitElement {
     const days = this.days;
 
     return html`
-      Flight number & route:
-      <input
-        type="text"
-        placeholder="NH7 SFO-NRT"
-        id="flightNum"
-        @input=${this.validate}
-      /><br />
-      Dates:
-      <input
-        type="date"
-        ${ref(this.startDateInput)}
-        required
-        min=${today}
-        value=${today}
-        @input=${this.dateChanged}
-      />
-      -
-      <input
-        type="date"
-        ${ref(this.endDateInput)}
-        required
-        min=${today}
-        value=${today}
-        @input=${this.dateChanged}
-      />
-      (${days} day${days > 1 ? "s" : ""})<br />
-      Class/Qty:
-      <input
-        type="text"
-        placeholder="I"
-        maxlength="1"
-        size="2"
-        id="classCode"
-        @input=${this.validate}
-      />
-      <select id="quantityMode">
-        <option value="1" checked>&ge;</option>
-        <option value="2">&lt;</option>
-      </select>
-      <input
-        type="number"
-        value="1"
-        placeholder="1"
-        min="1"
-        max="9"
-        id="quantity"
-        @input=${this.validate}
-      /><br />
+      <div class="row">
+        Flight number & route:
+        <input
+          type="text"
+          placeholder="NH7 SFO-NRT"
+          id="flightNum"
+          @input=${this.validate}
+        />
+      </div>
+      <div class="row">
+        Dates:
+        <input
+          type="date"
+          ${ref(this.startDateInput)}
+          required
+          min=${today}
+          value=${today}
+          @input=${this.dateChanged}
+        />
+        -
+        <input
+          type="date"
+          ${ref(this.endDateInput)}
+          required
+          min=${today}
+          value=${today}
+          @input=${this.dateChanged}
+        />
+        (${days} day${days > 1 ? "s" : ""})
+      </div>
+      <div class="row">
+        Class/Qty:
+        <input
+          type="text"
+          placeholder="I"
+          maxlength="1"
+          size="2"
+          id="classCode"
+          @input=${this.validate}
+        />
+        <select id="quantityMode">
+          <option value="1" checked>&ge;</option>
+          <option value="2">&lt;</option>
+        </select>
+        <input
+          type="number"
+          value="1"
+          placeholder="1"
+          min="1"
+          max="9"
+          id="quantity"
+          @input=${this.validate}
+        />
+      </div>
       <button ?disabled=${!this.validated} @click=${this.submit}>
         Queue Alerts
       </button>

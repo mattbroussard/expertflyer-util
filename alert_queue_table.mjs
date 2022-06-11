@@ -20,7 +20,10 @@ export class AlertQueueTable extends LitElement {
       padding-right: 10px;
     }
     #buttons {
-      margin-bottom: 3px;
+      margin-bottom: 5px;
+    }
+    #buttons > * {
+      margin-right: 5px;
     }
   `;
 
