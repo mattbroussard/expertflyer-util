@@ -1,7 +1,14 @@
-import { LitElement, html, css, createRef, ref } from "./lib/lit-all.min.js";
+import {
+  LitElement,
+  html,
+  css,
+  createRef,
+  ref,
+  when,
+} from "./lib/lit-all.min.js";
 import { newRandomId } from "./random_ids.mjs";
 
-export class DeleteAlertsButton extends LitElement {
+export class BulkActionButtons extends LitElement {
   static properties = {
     message: { state: true },
   };
@@ -13,7 +20,7 @@ export class DeleteAlertsButton extends LitElement {
     this.message = null;
   }
 
-  onClick() {
+  onClickDelete() {
     const selected = Array.from(
       document.querySelectorAll("ef-utils-alert-multiselect-checkbox")
     ).filter((check) => check.checked);
@@ -64,13 +71,39 @@ export class DeleteAlertsButton extends LitElement {
     this.processDeletions(params);
   }
 
-  async processDeletions(deletions) {
-    for (let i = 0; i < deletions.length; i++) {
-      this.message = `Deleting ${i + 1} of ${deletions.length}...`;
+  onClickResubmit() {
+    const selected = Array.from(
+      document.querySelectorAll("ef-utils-alert-multiselect-checkbox")
+    ).filter(
+      (check) =>
+        check.checked && check.yuiRecord.getData("flagFlightShowResubmit")
+    );
+    if (selected.length == 0) {
+      alert("Must have at least one resubmittable alert selected");
+      return;
+    }
 
-      const deletionParams = deletions[i];
+    const params = selected.map((check) => {
+      // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Record.html
+      const record = check.yuiRecord;
+      const alertId = record.getData("bean").alertId;
+      const alertType = "flight";
+
+      // Params for EF's resubmitAlert function
+      return [alertId, alertType];
+    });
+
+    // Async, not awaited; errors handled internally
+    this.processResubmissions(params);
+  }
+
+  async processMultiple(params, singleMethodName, verb) {
+    for (let i = 0; i < params.length; i++) {
+      this.message = `${verb} ${i + 1} of ${params.length}...`;
+
+      const singleParams = params[i];
       try {
-        await this.deleteSingle(deletionParams);
+        await this[singleMethodName](singleParams);
       } catch (err) {
         this.message = `Error: ${err.message}`;
         return;
@@ -80,15 +113,21 @@ export class DeleteAlertsButton extends LitElement {
     this.message = null;
   }
 
-  async deleteSingle(deletionParams) {
-    if (!deleteAlert || !GUI?.util?.AsyncRequest) {
-      throw new Error("deleteAlert or required YUI functions missing");
-    }
+  async processDeletions(deletions) {
+    await this.processMultiple(deletions, "deleteSingle", "Deleting");
+  }
 
+  async processResubmissions(resubmissions) {
+    await this.processMultiple(resubmissions, "resubmitSingle", "Resubmitting");
+  }
+
+  async rateLimit() {
     // Random wait between 2-4 seconds for rate limiting
     const timeout = Math.round(Math.random() * 2000) + 2000;
     await wait(timeout);
+  }
 
+  promisifyEFAsyncRequest(memo) {
     let resolvePromise;
     let rejectPromise;
     const promise = new Promise((resolve, reject) => {
@@ -96,12 +135,7 @@ export class DeleteAlertsButton extends LitElement {
       rejectPromise = reject;
     });
 
-    // Prevent confirmation popup from appearing during deleteAlert call
-    patchSingleCall(GUI, "confirm", (orig) => (message, onConfirmed) => {
-      onConfirmed();
-    });
-
-    // Handle return of AJAX call that deleteAlert does
+    // Handle return of AJAX call that deleteAlert/resubmitAlert does
     patchSingleCall(
       GUI.util,
       "AsyncRequest",
@@ -117,7 +151,7 @@ export class DeleteAlertsButton extends LitElement {
               return options.success.apply(this, successArgs);
             },
             failure: function (...failureArgs) {
-              rejectPromise(new Error("deleteAlert AJAX failure"));
+              rejectPromise(new Error(`${memo} AJAX failure`));
               return options.failure.apply(this, failureArgs);
             },
           },
@@ -126,8 +160,41 @@ export class DeleteAlertsButton extends LitElement {
       }
     );
 
+    return promise;
+  }
+
+  async deleteSingle(deletionParams) {
+    if (!deleteAlert || !GUI?.util?.AsyncRequest) {
+      throw new Error("deleteAlert or required YUI functions missing");
+    }
+
+    await this.rateLimit();
+
+    // Prevent confirmation popup from appearing during deleteAlert call
+    patchSingleCall(GUI, "confirm", (orig) => (message, onConfirmed) => {
+      onConfirmed();
+    });
+
+    // Handle return of AJAX call that deleteAlert does
+    const promise = this.promisifyEFAsyncRequest("deleteAlert");
+
     // Call EF's own deleteAlert function now that we've messed with the YUI methods it calls :P
     deleteAlert(...deletionParams);
+    await promise;
+  }
+
+  async resubmitSingle(resubmitParams) {
+    if (!resubmitAlert || !GUI?.util?.AsyncRequest) {
+      throw new Error("deleteAlert or required YUI functions missing");
+    }
+
+    await this.rateLimit();
+
+    // Handle return of AJAX call that resubmitAlert does
+    const promise = this.promisifyEFAsyncRequest("resubmitAlert");
+
+    // Call EF's own resubmitAlert function now that we've messed with the YUI methods it calls :P
+    resubmitAlert(...resubmitParams);
     await promise;
   }
 
@@ -138,19 +205,34 @@ export class DeleteAlertsButton extends LitElement {
     label {
       user-select: none;
     }
+    :host(*) {
+      position: relative;
+      top: 2em;
+      margin-top: -2em;
+      margin-bottom: 2.5em;
+      margin-left: 5px;
+      display: inline-block;
+    }
   `;
 
   render() {
     return html`
-      <button @click=${this.onClick} ?disabled=${!!this.message}>
+      <button @click=${this.onClickDelete} ?disabled=${!!this.message}>
         ${this.message || "Delete selected"}
       </button>
+      ${when(
+        !this.message,
+        () => html`
+          <button @click=${this.onClickResubmit}>Resubmit selected</button>
+        `
+      )}
+      <br />
       <input type="checkbox" id="queueCheck" ${ref(this.queueCheckbox)} />
       <label for="queueCheck">When deleting, add back to EFUtils queue</label>
     `;
   }
 }
-customElements.define("ef-utils-alert-delete-button", DeleteAlertsButton);
+customElements.define("ef-utils-alert-bulk-action-buttons", BulkActionButtons);
 
 // TODO: figure out how to share this from content_script_utils in an ESM context
 async function wait(ms) {
