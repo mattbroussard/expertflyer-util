@@ -1,5 +1,5 @@
-import { LitElement, html, css, when } from "./lib/lit-all.min.js";
-import { ChromeStorageController } from "./chrome_storage_controller.mjs";
+import { LitElement, html, css, when } from "../../lib/lit-all.min.js";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 import "./alert_queue_import_export_buttons.mjs";
 
 export class AlertQueueTable extends LitElement {

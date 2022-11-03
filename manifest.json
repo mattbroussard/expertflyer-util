@@ -9,30 +9,37 @@
       "matches": ["https://*.expertflyer.com/flightAlert.do*"],
       "js": [
         "lib/iframeResizer.min.js",
-        "content_script_utils.js",
-        "alert_form_filler.js",
-        "alert_iframe.js"
+        "src/util/content_script_utils.js",
+        "src/alerts_form_filler/alert_form_filler.js",
+        "src/alerts_queue_ui/alert_iframe.js"
       ],
-      "css": ["alert_iframe.css"]
+      "css": ["src/alerts_queue_ui/alert_iframe.css"]
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
-      "js": ["lib/iframeResizer.min.js", "alert_success.js", "alert_iframe.js"],
-      "css": ["alert_iframe.css"]
+      "js": [
+        "lib/iframeResizer.min.js",
+        "src/alerts_form_filler/alert_success.js",
+        "src/alerts_queue_ui/alert_iframe.js"
+      ],
+      "css": ["src/alerts_queue_ui/alert_iframe.css"]
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertList.do"],
-      "js": ["inject_scripts.js", "alerts_list.js"],
-      "css": ["depaginate.css", "alerts_multiselect.css"]
+      "js": ["src/util/inject_scripts.js", "src/alerts_list.js"],
+      "css": [
+        "src/alerts_depaginate/depaginate.css",
+        "src/alerts_multiselect/alerts_multiselect.css"
+      ]
     },
     {
       "matches": ["https://*.expertflyer.com/air/awardUpgradeResults.do"],
-      "js": ["highlight_award_availability.js"],
-      "css": ["highlight_award_availability.css"]
+      "js": ["src/highlight_availability/highlight_award_availability.js"],
+      "css": ["src/highlight_availability/highlight_award_availability.css"]
     }
   ],
   "background": {
-    "service_worker": "alerts_background.mjs"
+    "service_worker": "src/alerts_form_filler/alerts_background.mjs"
   },
   "icons": {
     "128": "icon.png"
@@ -41,14 +48,14 @@
     {
       "resources": [
         "lib/lit-all.min.js",
-        "disable_lit_warning.js",
-        "depaginate.js",
-        "alerts_multiselect.mjs",
-        "alerts_bulk_action_buttons.mjs",
-        "alerts_multiselect_checkbox.mjs",
-        "random_ids.mjs",
-        "index.html",
-        "index.mjs"
+        "src/util/disable_lit_warning.js",
+        "src/alerts_depaginate/depaginate.js",
+        "src/alerts_multiselect/alerts_multiselect.mjs",
+        "src/alerts_multiselect/alerts_bulk_action_buttons.mjs",
+        "src/alerts_multiselect/alerts_multiselect_checkbox.mjs",
+        "src/util/random_ids.mjs",
+        "src/alerts_queue_ui/index.html",
+        "src/alerts_queue_ui/index.mjs"
       ],
       "matches": ["https://*.expertflyer.com/*"]
     }

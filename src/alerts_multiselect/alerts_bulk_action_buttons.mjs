@@ -5,8 +5,8 @@ import {
   createRef,
   ref,
   when,
-} from "./lib/lit-all.min.js";
-import { newRandomId } from "./random_ids.mjs";
+} from "../../lib/lit-all.min.js";
+import { newRandomId } from "../util/random_ids.mjs";
 
 export class BulkActionButtons extends LitElement {
   static properties = {

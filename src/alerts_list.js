@@ -14,7 +14,7 @@ window.addEventListener("message", async (evt) => {
 });
 
 injectScripts([
-  "disable_lit_warning.js",
-  "depaginate.js",
-  "alerts_multiselect.mjs",
+  "src/util/disable_lit_warning.js",
+  "src/alerts_depaginate/depaginate.js",
+  "src/alerts_multiselect/alerts_multiselect.mjs",
 ]);

@@ -6,7 +6,7 @@ function insertIframe() {
   }
 
   const url =
-    chrome.runtime.getURL("index.html") +
+    chrome.runtime.getURL("src/alerts_queue_ui/index.html") +
     `?parent=${encodeURIComponent(window.location.pathname)}`;
   const iframe = document.createElement("iframe");
   iframe.src = url;

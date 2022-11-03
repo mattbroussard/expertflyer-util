@@ -1,1 +1,1 @@
-import "./alerts_background.mjs";
+import "./alerts_form_filler/alerts_background.mjs";

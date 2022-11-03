@@ -1,6 +1,12 @@
-import { LitElement, html, css, ref, createRef } from "./lib/lit-all.min.js";
-import { ChromeStorageController } from "./chrome_storage_controller.mjs";
-import { newRandomId } from "./random_ids.mjs";
+import {
+  LitElement,
+  html,
+  css,
+  ref,
+  createRef,
+} from "../../lib/lit-all.min.js";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
+import { newRandomId } from "../util/random_ids.mjs";
 
 function isValidDate(date) {
   return !isNaN(date.getTime());

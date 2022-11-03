@@ -1,5 +1,5 @@
-import { LitElement, html, css, when } from "./lib/lit-all.min.js";
-import { ChromeStorageController } from "./chrome_storage_controller.mjs";
+import { LitElement, html, css, when } from "../../lib/lit-all.min.js";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 
 export class AlertFillerStatusDisplay extends LitElement {
   entries = new ChromeStorageController(this, "alerts-alertQueue", []);

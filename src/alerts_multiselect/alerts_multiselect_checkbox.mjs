@@ -1,4 +1,10 @@
-import { LitElement, html, ref, createRef, css } from "./lib/lit-all.min.js";
+import {
+  LitElement,
+  html,
+  ref,
+  createRef,
+  css,
+} from "../../lib/lit-all.min.js";
 
 let lastChecked = null;
 
