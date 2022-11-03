@@ -45,3 +45,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.3: adds highlighting of "yes" rows in award availability search
 - 0.4: adds import/export buttons for alerts queue
 - 0.5: adds ability to bulk resubmit previously-notified alerts; reorganized files in repo
+- 0.6: minor bugfix to silence Lit warnings
