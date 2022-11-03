@@ -1,5 +1,5 @@
 import "./alerts_multiselect_checkbox.mjs";
-import "./alerts_delete_button.mjs";
+import "./alerts_bulk_action_buttons.mjs";
 
 function addCheckboxes() {
   // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.DataTable.html
@@ -31,13 +31,13 @@ function addCheckboxes() {
   table.refreshView();
 }
 
-function addDeleteButton() {
+function addBulkActionButtons() {
   const container = document.querySelector("#flightAlertListPaginator");
   if (container) {
-    const btn = document.createElement("ef-utils-alert-delete-button");
+    const btn = document.createElement("ef-utils-alert-bulk-action-buttons");
     container.appendChild(btn);
   }
 }
 
 addCheckboxes();
-addDeleteButton();
+addBulkActionButtons();
