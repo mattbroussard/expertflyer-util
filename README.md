@@ -19,7 +19,7 @@ Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The e
 ## Other features
 
 - A "Depaginate" button appears the bottom of paginated flight alert lists. This removes pagination and shows everything on one page.
-- Flight alerts can be selected with a checkbox on the right side, then deleted in bulk.
+- Flight alerts can be selected with a checkbox on the right side, then deleted or resubmitted in bulk.
   - Optionally, deleted alerts can be re-added back to the queue used by the bulk adding feature described above.
   - You can shift-click to select a range of consecutive rows
 - Rows with "Yes" or non-zero availability are highlighted in green for easier visual identification on the Awards & Upgrades search page.
@@ -43,4 +43,5 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.1: initial release with support for creating flight alerts in bulk
 - 0.2: adds ability to de-paginate the alerts list and delete alerts in bulk
 - 0.3: adds highlighting of "yes" rows in award availability search
-- 0.4: add import/export buttons for alerts queue
+- 0.4: adds import/export buttons for alerts queue
+- 0.5: adds ability to bulk resubmit previously-notified alerts; reorganized files in repo
