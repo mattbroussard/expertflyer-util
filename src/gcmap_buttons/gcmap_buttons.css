@@ -1,3 +1,16 @@
 #ef-util-gcmap-all-button {
   margin-left: 10px;
 }
+
+.yui-dt-col-flightDetails .yui-dt-liner {
+  width: 54px !important; /* default width 36px */
+}
+
+.yui-dt-col-stops .yui-dt-liner {
+  width: 34px !important; /* default width 52px */
+}
+
+th#yui-dt0-th-stops a {
+  background: transparent !important;
+  font-size: 85% !important;
+}

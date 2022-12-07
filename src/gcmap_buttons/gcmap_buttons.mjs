@@ -67,7 +67,9 @@ function addButtons() {
       const button = document.createElement("ef-utils-gcmap-button");
       button.yuiTable = table;
       button.yuiRecord = oRecord;
-      elCell.appendChild(button);
+
+      const innerLiner = elCell.querySelector(".inner-liner");
+      innerLiner.appendChild(button);
     },
   };
 
