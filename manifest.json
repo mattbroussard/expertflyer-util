@@ -39,8 +39,15 @@
     },
     {
       "matches": ["https://*.expertflyer.com/air/flightTimetablesResults.do"],
-      "js": ["src/util/inject_scripts.js", "src/timetable.js"],
-      "css": ["src/gcmap_buttons/gcmap_buttons.css"]
+      "js": [
+        "src/util/chrome_storage_proxy.js",
+        "src/util/inject_scripts.js",
+        "src/timetable.js"
+      ],
+      "css": [
+        "src/gcmap_buttons/gcmap_buttons.css",
+        "src/saved_filters/saved_filters.css"
+      ]
     }
   ],
   "background": {
@@ -62,7 +69,9 @@
         "src/alerts_queue_ui/index.html",
         "src/alerts_queue_ui/index.mjs",
         "src/gcmap_buttons/gcmap_buttons.mjs",
-        "images/gcmap.ico"
+        "images/gcmap.ico",
+        "src/saved_filters/saved_filters.mjs",
+        "src/util/chrome_storage_controller.mjs"
       ],
       "matches": ["https://*.expertflyer.com/*"]
     }
