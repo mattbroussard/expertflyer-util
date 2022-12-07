@@ -39,7 +39,8 @@
     },
     {
       "matches": ["https://*.expertflyer.com/air/flightTimetablesResults.do"],
-      "js": ["src/util/inject_scripts.js", "src/timetable.js"]
+      "js": ["src/util/inject_scripts.js", "src/timetable.js"],
+      "css": ["src/gcmap_buttons/gcmap_buttons.css"]
     }
   ],
   "background": {

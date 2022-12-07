@@ -6,6 +6,13 @@ import {
   css,
 } from "../../lib/lit-all.min.js";
 
+function buildGCMapURL(query) {
+  const base = "http://www.gcmap.com/mapui";
+  const url = new URL(base);
+  url.searchParams.set("P", query);
+  return url.toString();
+}
+
 export class GCMapButton extends LitElement {
   static get properties() {
     return {
@@ -29,10 +36,7 @@ export class GCMapButton extends LitElement {
   }
 
   get linkUrl() {
-    const base = "http://www.gcmap.com/mapui";
-    const url = new URL(base);
-    url.searchParams.set("P", this.segmentString);
-    return url.toString();
+    return buildGCMapURL(this.segmentString);
   }
 
   render() {
@@ -72,4 +76,28 @@ function addButtons() {
   table.refreshView();
 }
 
+function mapAll() {
+  const buttons = document.querySelectorAll("ef-utils-gcmap-button");
+  const segments = Array.from(buttons).map((btn) => btn.segmentString);
+  const uniqSegments = Array.from(new Set(segments));
+  const query = uniqSegments.join(",");
+  const url = buildGCMapURL(query);
+  window.open(url, "_blank");
+}
+
+function addMapAllButton() {
+  const button = document.createElement("a");
+  button.innerText = "GCMap All";
+  button.href = "javascript:void(0);";
+  button.onclick = mapAll;
+  button.id = "ef-util-gcmap-all-button";
+
+  const filterSearchButton = document.querySelector("#filterSearchButton");
+  filterSearchButton.parentNode.insertBefore(
+    button,
+    filterSearchButton.nextSibling
+  );
+}
+
 addButtons();
+addMapAllButton();
