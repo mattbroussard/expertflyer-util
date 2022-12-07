@@ -49,7 +49,7 @@ export class GCMapButton extends LitElement {
 }
 customElements.define("ef-utils-gcmap-button", GCMapButton);
 
-function addButtons() {
+function addRowButtons() {
   // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.DataTable.html
   const table = window["flightTimetablesResultsDatatable"];
   if (!table) {
@@ -58,9 +58,14 @@ function addButtons() {
 
   const detailsCol = table.getColumn("flightDetails");
   const detailsColSpec = detailsCol.getDefinition();
+  // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Column.html
   const newColSpec = {
     ...detailsColSpec,
-    formatter: function (elCell, oRecord, oColumn) {
+    formatter: function (
+      elCell, // DOM node
+      oRecord, // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Record.html
+      oColumn // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Column.html
+    ) {
       // Call default EF formatter
       detailsColSpec.formatter(elCell, oRecord, oColumn);
 
@@ -101,5 +106,5 @@ function addMapAllButton() {
   );
 }
 
-addButtons();
+addRowButtons();
 addMapAllButton();
