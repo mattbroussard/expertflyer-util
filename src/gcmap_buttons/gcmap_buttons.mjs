@@ -1,10 +1,4 @@
-import {
-  LitElement,
-  html,
-  ref,
-  createRef,
-  css,
-} from "../../lib/lit-all.min.js";
+import { LitElement, html } from "../../lib/lit-all.min.js";
 
 function buildGCMapURL(query) {
   const base = "http://www.gcmap.com/mapui";
