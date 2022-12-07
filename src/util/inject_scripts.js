@@ -11,3 +11,11 @@ function injectScripts(scripts) {
     document.body.appendChild(script);
   }
 }
+
+function injectDataScriptTag(id, value) {
+  const script = document.createElement("script");
+  script.type = "application/json";
+  script.id = id;
+  script.innerHTML = JSON.stringify(value);
+  document.body.appendChild(script);
+}

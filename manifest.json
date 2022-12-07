@@ -36,6 +36,10 @@
       "matches": ["https://*.expertflyer.com/air/awardUpgradeResults.do"],
       "js": ["src/highlight_availability/highlight_award_availability.js"],
       "css": ["src/highlight_availability/highlight_award_availability.css"]
+    },
+    {
+      "matches": ["https://*.expertflyer.com/air/flightTimetablesResults.do"],
+      "js": ["src/util/inject_scripts.js", "src/timetable.js"]
     }
   ],
   "background": {
@@ -55,7 +59,9 @@
         "src/alerts_multiselect/alerts_multiselect_checkbox.mjs",
         "src/util/random_ids.mjs",
         "src/alerts_queue_ui/index.html",
-        "src/alerts_queue_ui/index.mjs"
+        "src/alerts_queue_ui/index.mjs",
+        "src/gcmap_buttons/gcmap_buttons.mjs",
+        "images/gcmap.ico"
       ],
       "matches": ["https://*.expertflyer.com/*"]
     }
