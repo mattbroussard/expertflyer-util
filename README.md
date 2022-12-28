@@ -23,6 +23,10 @@ Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The e
   - Optionally, deleted alerts can be re-added back to the queue used by the bulk adding feature described above.
   - You can shift-click to select a range of consecutive rows
 - Rows with "Yes" or non-zero availability are highlighted in green for easier visual identification on the Awards & Upgrades search page.
+- Lists of flight alerts (in queue) can be imported or exported as JSON
+- On the Flight Timetables page, you can easily save and restore filter settings in a single click (useful when switching between endpoints)
+- On the Awards & Upgrades and Flight Availability search result pages, you can navigate to previous/next date ranges with a single click
+- On the Flight Timetables page, you can view individual flights or the whole page worth of flights on GCMap
 
 ## Troubleshooting
 
@@ -47,3 +51,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.5: adds ability to bulk resubmit previously-notified alerts; reorganized files in repo
 - 0.6: minor bugfix to silence Lit warnings
 - 0.7: adds GCMap links and ability to save filter configuation on the Flight Timetables page
+- 0.8: adds previous/next calendar navigation buttons to award and availability search result pages
