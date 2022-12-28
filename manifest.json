@@ -34,8 +34,28 @@
     },
     {
       "matches": ["https://*.expertflyer.com/air/awardUpgradeResults.do"],
-      "js": ["src/highlight_availability/highlight_award_availability.js"],
+      "js": [
+        "src/util/chrome_storage_proxy.js",
+        "src/util/inject_scripts.js",
+        "src/calendar_nav/calendar_nav.js",
+        "src/highlight_availability/highlight_award_availability.js"
+      ],
       "css": ["src/highlight_availability/highlight_award_availability.css"]
+    },
+    {
+      "matches": ["https://*.expertflyer.com/air/flightAvailabilityResults.do"],
+      "js": [
+        "src/util/chrome_storage_proxy.js",
+        "src/util/inject_scripts.js",
+        "src/calendar_nav/calendar_nav.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://*.expertflyer.com/air/flightAvailability.do?flagRefine=true",
+        "https://*.expertflyer.com/air/awardUpgrade.do?flagRefine=true"
+      ],
+      "js": ["src/calendar_nav/calendar_nav_exec.js"]
     },
     {
       "matches": ["https://*.expertflyer.com/air/flightTimetablesResults.do"],
@@ -71,7 +91,8 @@
         "src/gcmap_buttons/gcmap_buttons.mjs",
         "images/gcmap.ico",
         "src/saved_filters/saved_filters.mjs",
-        "src/util/chrome_storage_controller.mjs"
+        "src/util/chrome_storage_controller.mjs",
+        "src/calendar_nav/calendar_nav_buttons.mjs"
       ],
       "matches": ["https://*.expertflyer.com/*"]
     }
