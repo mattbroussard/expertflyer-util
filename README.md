@@ -30,7 +30,7 @@ Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The e
 
 ## Troubleshooting
 
-This extension uses Chrome's [Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-migration/) which requires the use of Service Workers. This support seems to be a bit [buggy](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/LQ_VpMCpksw) still and sometimes the Service Worker is suspended by the browser and not correctly re-awoken when incoming messages occur. If the runner appears to stop, try loading the [Create New Flight Alert](https://www.expertflyer.com/flightAlert.do) form page anew.
+This extension uses Chrome's [Manifest Version 3](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-migration/) which requires the use of Service Workers. This support seems to be a bit [buggy](https://groups.google.com/a/chromium.org/g/chromium-extensions/c/LQ_VpMCpksw) still and sometimes the Service Worker is suspended by the browser and not correctly re-awoken when incoming messages occur (maybe/hopefully [fixed](https://bugs.chromium.org/p/chromium/issues/detail?id=1371876#c5) in Chrome 110?). If the runner appears to stop, try loading the [Create New Flight Alert](https://www.expertflyer.com/flightAlert.do) form page anew.
 
 ## Development notes
 
