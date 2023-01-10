@@ -119,8 +119,10 @@ function insertButtons() {
   const el = document.createElement("ef-utils-calendar-nav-buttons");
   el.setAttribute("date", date);
   el.setAttribute("rangeWidth", rangeWidth);
-
   header.parentNode.insertBefore(el, header.nextSibling);
+
+  const el2 = el.cloneNode();
+  header.parentNode.appendChild(el2);
 }
 
 insertButtons();
