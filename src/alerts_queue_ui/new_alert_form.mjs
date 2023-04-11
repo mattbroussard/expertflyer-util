@@ -8,12 +8,43 @@ import {
 import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 import { newRandomId } from "../util/random_ids.mjs";
 
+// TODO: make this allow the weekdays in other orders; will have to update getDateObjects too
+const weekdayRegex = /^(M)?(T)?(W)?(Th)?(F)?(Sa)?(Su)?$/i;
+const defaultWeekdays = "MTWThFSaSu";
+
 function isValidDate(date) {
   return !isNaN(date.getTime());
 }
 
-function computeDays(a, b) {
-  return Math.abs(a.getTime() - b.getTime()) / (24 * 60 * 60 * 1000) + 1;
+function isValidWeekdayString(weekdays) {
+  if (!weekdays) {
+    return true;
+  }
+  return Boolean(weekdays.match(weekdayRegex));
+}
+
+function getDateObjects(startDate, endDate, weekdays) {
+  const matches = (weekdays || defaultWeekdays).match(weekdayRegex);
+  if (!matches) {
+    return [];
+  }
+
+  const ret = [];
+
+  for (
+    let d = startDate.getTime();
+    d <= endDate.getTime();
+    d += 24 * 60 * 60 * 1000
+  ) {
+    const dateObj = new Date(d);
+
+    const day = (dateObj.getUTCDay() + 6) % 7;
+    if (matches[day + 1]) {
+      ret.push(dateObj);
+    }
+  }
+
+  return ret;
 }
 
 export class NewAlertForm extends LitElement {
@@ -35,6 +66,9 @@ export class NewAlertForm extends LitElement {
   static styles = css`
     input {
       font-family: monospace;
+    }
+    #flightNum,
+    #classCode {
       text-transform: uppercase;
     }
     div.row {
@@ -76,7 +110,10 @@ export class NewAlertForm extends LitElement {
       isValidDate(this.startDate) &&
       isValidDate(this.endDate) &&
       this.endDate >= this.startDate &&
+      this.days > 0 &&
       this.renderRoot.querySelector("#classCode").value.length == 1 &&
+      this.renderRoot.querySelector("#prefix").value.length <= 6 &&
+      isValidWeekdayString(this.renderRoot.querySelector("#weekdays").value) &&
       ["1", "2"].includes(this.renderRoot.querySelector("#quantityMode").value);
   }
 
@@ -94,7 +131,8 @@ export class NewAlertForm extends LitElement {
         this.endDateInput.value.value = this.startDateInput.value.value;
       }
 
-      this.days = computeDays(this.startDate, this.endDate);
+      const weekdays = this.renderRoot.querySelector("#weekdays").value;
+      this.days = getDateObjects(this.startDate, this.endDate, weekdays).length;
     }
 
     this.validate();
@@ -118,11 +156,14 @@ export class NewAlertForm extends LitElement {
     };
     const entries = [];
 
-    for (
-      let date = this.startDate.getTime();
-      date <= this.endDate.getTime();
-      date += 24 * 60 * 60 * 1000
-    ) {
+    let prefix = this.renderRoot.querySelector("#prefix").value.trim();
+    if (prefix.length > 0) {
+      prefix += " ";
+    }
+
+    const weekdays = this.renderRoot.querySelector("#weekdays").value;
+
+    for (const date of getDateObjects(this.startDate, this.endDate, weekdays)) {
       const dateObj = new Date(date);
       const shortYear = String(dateObj.getUTCFullYear()).substring(2);
       const dateStr = `${
@@ -144,7 +185,7 @@ export class NewAlertForm extends LitElement {
           : quantity > 1
           ? ` x${quantity}`
           : "";
-      const alertName = `${airline}${flightNumber} ${departingAirport}-${arrivingAirport} ${
+      const alertName = `${prefix}${airline}${flightNumber} ${departingAirport}-${arrivingAirport} ${
         dateObj.getUTCMonth() + 1
       }/${dateObj.getUTCDate()} ${classCode}${quantityStr}`;
 
@@ -170,7 +211,18 @@ export class NewAlertForm extends LitElement {
           type="text"
           placeholder="NH7 SFO-NRT"
           id="flightNum"
+          size="14"
           @input=${this.validate}
+        />
+      </div>
+      <div class="row">
+        Alert name prefix:
+        <input
+          type="text"
+          id="prefix"
+          @input=${this.validate}
+          size="6"
+          maxlength="6"
         />
       </div>
       <div class="row">
@@ -191,6 +243,14 @@ export class NewAlertForm extends LitElement {
           min=${today}
           value=${today}
           @input=${this.dateChanged}
+        />
+        <input
+          type="text"
+          id="weekdays"
+          placeholder=${defaultWeekdays}
+          @input=${this.dateChanged}
+          maxlength="10"
+          size="10"
         />
         (${days} day${days > 1 ? "s" : ""})
       </div>
