@@ -49,6 +49,11 @@ function getDateObjects(startDate, endDate, weekdays) {
 
 export class NewAlertForm extends LitElement {
   entries = new ChromeStorageController(this, "alerts-alertQueue", []);
+  currentState = new ChromeStorageController(
+    this,
+    "alerts-currentState",
+    "idle"
+  );
   startDateInput = createRef();
   endDateInput = createRef();
 
@@ -203,6 +208,10 @@ export class NewAlertForm extends LitElement {
   render() {
     const today = this.today;
     const days = this.days;
+
+    if (this.currentState.get() != "idle") {
+      return null;
+    }
 
     return html`
       <div class="row">

@@ -4,6 +4,11 @@ import "./alert_queue_import_export_buttons.mjs";
 
 export class AlertQueueTable extends LitElement {
   alerts = new ChromeStorageController(this, "alerts-alertQueue", []);
+  currentState = new ChromeStorageController(
+    this,
+    "alerts-currentState",
+    "idle"
+  );
 
   static styles = css`
     th {
@@ -29,13 +34,18 @@ export class AlertQueueTable extends LitElement {
 
   render() {
     const alerts = this.alerts.get();
+    const canDoActions = this.currentState.get() == "idle";
+
     return html`
       <div id="container">
         <h2 id="queue_heading">Queued to Add (${alerts.length})</h2>
         <div id="buttons">
           <ef-export-alert-queue-button></ef-export-alert-queue-button>
           <ef-import-alert-queue-button></ef-import-alert-queue-button>
-          <button @click=${this.clearQueue}>Clear Queue</button>
+          ${when(
+            canDoActions,
+            () => html` <button @click=${this.clearQueue}>Clear Queue</button> `
+          )}
         </div>
         <table>
           <tbody>
@@ -44,7 +54,7 @@ export class AlertQueueTable extends LitElement {
               <th>Flight</th>
               <th>Date</th>
               <th>Class/Qty</th>
-              <th>Actions</th>
+              ${when(canDoActions, () => html`<th>Actions</th>`)}
             </tr>
             ${alerts.map(
               (alert, i) => html`<tr>
@@ -58,18 +68,23 @@ export class AlertQueueTable extends LitElement {
                   ${alert.classCode} ${alert.quantityMode == 2 ? "<" : "≥"}
                   ${alert.quantity}
                 </td>
-                <td>
-                  <button @click=${this.deleteEntry(alert, i)}>❌</button>
-                  <button @click=${this.copyJson(alert)}>Copy JSON</button>
-                  ${when(
-                    alert.batchId,
-                    () => html`<button
-                      @click=${this.deleteBatch(alert.batchId)}
-                    >
-                      Delete batch
-                    </button>`
-                  )}
-                </td>
+                ${when(
+                  canDoActions,
+                  () => html`
+                    <td>
+                      <button @click=${this.deleteEntry(alert, i)}>❌</button>
+                      <button @click=${this.copyJson(alert)}>Copy JSON</button>
+                      ${when(
+                        alert.batchId,
+                        () => html`<button
+                          @click=${this.deleteBatch(alert.batchId)}
+                        >
+                          Delete batch
+                        </button>`
+                      )}
+                    </td>
+                  `
+                )}
               </tr>`
             )}
           </tbody>
