@@ -8,8 +8,8 @@ import {
 import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 import { newRandomId } from "../util/random_ids.mjs";
 
-// TODO: make this allow the weekdays in other orders; will have to update getDateObjects too
-const weekdayRegex = /^(M)?(T)?(W)?(Th)?(F)?(Sa)?(Su)?$/i;
+// Th has to be before T in the regex in order to not be matched as T
+const weekdayRegex = /M|Th|T|W|F|Sa|Su/gi;
 const defaultWeekdays = "MTWThFSaSu";
 
 function isValidDate(date) {
@@ -24,9 +24,21 @@ function isValidWeekdayString(weekdays) {
 }
 
 function getDateObjects(startDate, endDate, weekdays) {
-  const matches = (weekdays || defaultWeekdays).match(weekdayRegex);
-  if (!matches) {
+  const matches = Array.from(
+    (weekdays || defaultWeekdays).matchAll(weekdayRegex)
+  );
+  if (!matches.length) {
     return [];
+  }
+
+  const weekdaySet = new Set();
+  const idxToDay = ["su", "m", "t", "w", "th", "f", "sa"];
+  for (const match of matches) {
+    // Note: `match` is itself an array of matched capture groups
+    const idx = idxToDay.indexOf(match[0].toLowerCase());
+    if (idx >= 0) {
+      weekdaySet.add(idx);
+    }
   }
 
   const ret = [];
@@ -38,8 +50,7 @@ function getDateObjects(startDate, endDate, weekdays) {
   ) {
     const dateObj = new Date(d);
 
-    const day = (dateObj.getUTCDay() + 6) % 7;
-    if (matches[day + 1]) {
+    if (weekdaySet.has(dateObj.getUTCDay())) {
       ret.push(dateObj);
     }
   }
@@ -258,10 +269,9 @@ export class NewAlertForm extends LitElement {
           id="weekdays"
           placeholder=${defaultWeekdays}
           @input=${this.dateChanged}
-          maxlength="10"
-          size="10"
+          size="11"
         />
-        (${days} day${days > 1 ? "s" : ""})
+        (${days} day${days != 1 ? "s" : ""})
       </div>
       <div class="row">
         Class/Qty:
