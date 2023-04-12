@@ -52,3 +52,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.6: minor bugfix to silence Lit warnings
 - 0.7: adds GCMap links and ability to save filter configuation on the Flight Timetables page
 - 0.8: adds previous/next calendar navigation buttons to award and availability search result pages
+- 0.9: adds ability to add prefix to alert names and set alerts for flights that operate only on certain weekdays
