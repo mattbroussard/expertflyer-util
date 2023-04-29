@@ -86,6 +86,7 @@
         "src/alerts_multiselect/alerts_bulk_action_buttons.mjs",
         "src/alerts_multiselect/alerts_multiselect_checkbox.mjs",
         "src/util/random_ids.mjs",
+        "src/util/hover_box.mjs",
         "src/alerts_queue_ui/index.html",
         "src/alerts_queue_ui/index.mjs",
         "src/gcmap_buttons/gcmap_buttons.mjs",
