@@ -19,6 +19,7 @@ export class AlertQueueTable extends LitElement {
     td {
       border: 1px solid black;
       padding: 2px;
+      font-size: 16px;
     }
     th,
     td {

@@ -1,9 +1,37 @@
 import { newRandomId } from "./random_ids.mjs";
 
+export class ChromeStorageController {
+  inner = null;
+
+  constructor(host, key, defaultValue = null) {
+    if (chrome?.storage && false) {
+      this.inner = new PrivilegedChromeStorageController(
+        host,
+        key,
+        defaultValue
+      );
+    } else {
+      this.inner = new UnprivilegedChromeStorageController(
+        host,
+        key,
+        defaultValue
+      );
+    }
+  }
+
+  get() {
+    return this.inner.get();
+  }
+
+  set(val) {
+    return this.inner.set(val);
+  }
+}
+
 // Lit reactive controller that syncs data from Chrome extension storage API
 // and updates the host element when data changes
 // This class uses Chrome APIs directly so it can only run in an extension page.
-export class ChromeStorageController {
+export class PrivilegedChromeStorageController {
   host = null;
   key = null;
   value = null;

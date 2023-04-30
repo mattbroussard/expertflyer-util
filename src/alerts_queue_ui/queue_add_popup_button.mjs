@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "../../lib/lit-all.min.js";
-import { HoverBox } from "../util/hover_box.mjs";
+import "../util/hover_box.mjs";
 
 export class AddToQueuePopupButton extends LitElement {
   static styles = css`

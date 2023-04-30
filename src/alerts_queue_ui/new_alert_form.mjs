@@ -80,6 +80,9 @@ export class NewAlertForm extends LitElement {
   };
 
   static styles = css`
+    :host > * {
+      font-size: 12px;
+    }
     input {
       font-family: monospace;
     }
@@ -236,16 +239,6 @@ export class NewAlertForm extends LitElement {
         />
       </div>
       <div class="row">
-        Alert name prefix:
-        <input
-          type="text"
-          id="prefix"
-          @input=${this.validate}
-          size="6"
-          maxlength="6"
-        />
-      </div>
-      <div class="row">
         Dates:
         <input
           type="date"
@@ -295,6 +288,16 @@ export class NewAlertForm extends LitElement {
           max="9"
           id="quantity"
           @input=${this.validate}
+        />
+      </div>
+      <div class="row">
+        Alert name prefix (optional):
+        <input
+          type="text"
+          id="prefix"
+          @input=${this.validate}
+          size="6"
+          maxlength="6"
         />
       </div>
       <button ?disabled=${!this.validated} @click=${this.submit}>

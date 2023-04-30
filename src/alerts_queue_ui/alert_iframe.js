@@ -1,3 +1,4 @@
+// TODO: remove when iframe is gone
 function insertIframe() {
   const container = document.querySelector("div#centerwell");
   if (!container) {
@@ -26,4 +27,8 @@ function insertIframe() {
   );
 }
 
-insertIframe();
+// insertIframe();
+injectScripts([
+  "src/util/disable_lit_warning.js",
+  "src/alerts_queue_ui/alerts_queue_ui.mjs",
+]);

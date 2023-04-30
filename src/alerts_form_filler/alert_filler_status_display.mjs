@@ -8,10 +8,15 @@ export class AlertFillerStatusDisplay extends LitElement {
     "alerts-currentState",
     "idle"
   );
+  kickHintTimer = new TimeoutFlag(this, 5000);
 
   static styles = css`
     #container {
       margin-bottom: 10px;
+      font-size: 16px;
+    }
+    h2 {
+      font-size: 18px;
     }
   `;
 
@@ -33,9 +38,15 @@ export class AlertFillerStatusDisplay extends LitElement {
   }
 
   get isOnSuccessPage() {
+    const successPath = "/flightAlertSaveVerification.do";
+    if (window.location.pathname == successPath) {
+      return true;
+    }
+
+    // TODO: remove when iframe is gone
     const params = new URLSearchParams(window.location.search);
     const parent = params.get("parent");
-    return parent == "/flightAlertSaveVerification.do";
+    return parent == successPath;
   }
 
   start(evt) {
@@ -45,18 +56,22 @@ export class AlertFillerStatusDisplay extends LitElement {
     }
     evt.target.disabled = true;
 
-    chrome.runtime.sendMessage({ type: "ef-alert-start-queue" });
+    window.postMessage({ type: "ef-util-alert-start-queue" }, "*");
   }
 
   stop(evt) {
     evt.target.disabled = true;
-    chrome.runtime.sendMessage({ type: "ef-alert-stop-queue" });
+    window.postMessage({ type: "ef-util-alert-stop-queue" }, "*");
   }
 
   render() {
     const state = this.currentState.get();
     let kickHint = undefined;
-    if (state == "waiting_for_form" && this.isOnSuccessPage) {
+    if (
+      // state == "waiting_for_form" &&
+      this.isOnSuccessPage &&
+      this.kickHintTimer.hasWaited
+    ) {
       kickHint = html`
         <h3>
           Been stuck on this page for too long? Chrome has a bug;
@@ -82,8 +97,31 @@ export class AlertFillerStatusDisplay extends LitElement {
     `;
   }
 }
-
 customElements.define(
   "ef-utils-alert-filler-status-display",
   AlertFillerStatusDisplay
 );
+
+class TimeoutFlag {
+  hasWaited = false;
+  host = null;
+  timeoutDuration = 0;
+  timeout = null;
+
+  constructor(host, timeoutDuration) {
+    this.host = host;
+    this.timeoutDuration = timeoutDuration;
+    host.addController(this);
+  }
+
+  hostConnected() {
+    this.timeout = setTimeout(() => {
+      this.hasWaited = true;
+      this.host.requestUpdate();
+    }, this.timeoutDuration);
+  }
+
+  hostDisconnected() {
+    clearTimeout(this.timeout);
+  }
+}
