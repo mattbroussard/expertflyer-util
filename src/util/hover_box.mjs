@@ -32,6 +32,8 @@ export class HoverBox extends LitElement {
       visibility: hidden;
       background-color: #fff;
       cursor: auto;
+      z-index: 10000;
+      text-align: left;
     }
 
     .hoverBoxHeader {
