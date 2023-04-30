@@ -39,14 +39,7 @@ export class AlertFillerStatusDisplay extends LitElement {
 
   get isOnSuccessPage() {
     const successPath = "/flightAlertSaveVerification.do";
-    if (window.location.pathname == successPath) {
-      return true;
-    }
-
-    // TODO: remove when iframe is gone
-    const params = new URLSearchParams(window.location.search);
-    const parent = params.get("parent");
-    return parent == successPath;
+    return window.location.pathname == successPath;
   }
 
   start(evt) {

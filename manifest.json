@@ -8,27 +8,23 @@
     {
       "matches": ["https://*.expertflyer.com/flightAlert.do*"],
       "js": [
-        "lib/iframeResizer.min.js",
         "src/util/content_script_utils.js",
         "src/util/chrome_storage_proxy.js",
         "src/util/inject_scripts.js",
         "src/alerts_form_filler/alert_form_filler.js",
         "src/alerts_form_filler/alert_queue_start_stop.js",
-        "src/alerts_queue_ui/alert_iframe.js"
-      ],
-      "css": ["src/alerts_queue_ui/alert_iframe.css"]
+        "src/alerts_queue_ui/inject_alerts_queue_ui.js"
+      ]
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertSaveVerification.do*"],
       "js": [
-        "lib/iframeResizer.min.js",
         "src/util/chrome_storage_proxy.js",
         "src/util/inject_scripts.js",
         "src/alerts_form_filler/alert_success.js",
         "src/alerts_form_filler/alert_queue_start_stop.js",
-        "src/alerts_queue_ui/alert_iframe.js"
-      ],
-      "css": ["src/alerts_queue_ui/alert_iframe.css"]
+        "src/alerts_queue_ui/inject_alerts_queue_ui.js"
+      ]
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertList.do"],
@@ -95,8 +91,6 @@
         "src/alerts_multiselect/alerts_multiselect_checkbox.mjs",
         "src/util/random_ids.mjs",
         "src/util/hover_box.mjs",
-        "src/alerts_queue_ui/index.html",
-        "src/alerts_queue_ui/index.mjs",
         "src/alerts_queue_ui/queue_add_popup_button.mjs",
         "src/alerts_queue_ui/alert_queue_table.mjs",
         "src/alerts_queue_ui/new_alert_form.mjs",
