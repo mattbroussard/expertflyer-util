@@ -1,5 +1,6 @@
 import { LitElement, html, css } from "../../lib/lit-all.min.js";
 import "../util/hover_box.mjs";
+import "./new_alert_form.mjs";
 
 export class AddToQueuePopupButton extends LitElement {
   static styles = css`
@@ -11,6 +12,11 @@ export class AddToQueuePopupButton extends LitElement {
       bottom: 1px;
       left: 1px;
       text-decoration: none;
+    }
+
+    ef-utils-new-alert-form {
+      margin: 4px;
+      display: block;
     }
   `;
 
@@ -25,8 +31,8 @@ export class AddToQueuePopupButton extends LitElement {
         @click=${this.onClick}
         >🤖</a
       >
-      <ef-utils-hover-box title="Add to EFUtils Queue">
-        Sorry, not yet implemented.
+      <ef-utils-hover-box title="Add to EFUtils Queue" width="350">
+        <ef-utils-new-alert-form narrow="true"></ef-utils-new-alert-form>
       </ef-utils-hover-box>`;
   }
 }
@@ -37,7 +43,9 @@ customElements.define(
 
 function addToTable() {
   const flights = Array.from(
-    document.querySelectorAll("div.resultsContainer div.flightContainer")
+    document.querySelectorAll(
+      "div.resultsContainer div.flightContainer div.rowSegment"
+    )
   );
   if (flights.length == 0) {
     return;
@@ -45,17 +53,18 @@ function addToTable() {
 
   for (const flight of flights) {
     // Note: opsCell container is td on awards page and span on availability page
-    const opsCells = Array.from(flight.querySelectorAll(".col.colOps div.ops"));
-
-    for (const opsCell of opsCells) {
-      // Don't add multiple times
-      if (opsCell.querySelector("ef-utils-add-to-queue-popup-button")) {
-        continue;
-      }
-
-      const el = new AddToQueuePopupButton();
-      opsCell.appendChild(el);
+    const opsCell = flight.querySelector(".col.colOps div.ops");
+    if (!opsCell) {
+      continue;
     }
+
+    // Don't add multiple times
+    if (opsCell.querySelector("ef-utils-add-to-queue-popup-button")) {
+      continue;
+    }
+
+    const el = new AddToQueuePopupButton();
+    opsCell.appendChild(el);
   }
 }
 

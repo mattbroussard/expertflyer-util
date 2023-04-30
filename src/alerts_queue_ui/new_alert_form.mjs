@@ -4,6 +4,7 @@ import {
   css,
   ref,
   createRef,
+  when,
 } from "../../lib/lit-all.min.js";
 import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 import { newRandomId } from "../util/random_ids.mjs";
@@ -69,6 +70,9 @@ export class NewAlertForm extends LitElement {
   endDateInput = createRef();
 
   static properties = {
+    narrow: {
+      type: Boolean,
+    },
     validated: {
       type: Boolean,
       state: true,
@@ -227,6 +231,17 @@ export class NewAlertForm extends LitElement {
       return null;
     }
 
+    const weekdays = html`
+      <input
+        type="text"
+        id="weekdays"
+        placeholder=${defaultWeekdays}
+        @input=${this.dateChanged}
+        size="11"
+      />
+      (${days} day${days != 1 ? "s" : ""})
+    `;
+
     return html`
       <div class="row">
         Flight number & route:
@@ -257,15 +272,12 @@ export class NewAlertForm extends LitElement {
           value=${today}
           @input=${this.dateChanged}
         />
-        <input
-          type="text"
-          id="weekdays"
-          placeholder=${defaultWeekdays}
-          @input=${this.dateChanged}
-          size="11"
-        />
-        (${days} day${days != 1 ? "s" : ""})
+        ${when(!this.narrow, () => weekdays)}
       </div>
+      ${when(
+        this.narrow,
+        () => html`<div class="row">Weekdays: ${weekdays}</div>`
+      )}
       <div class="row">
         Class/Qty:
         <input
