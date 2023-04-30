@@ -1,5 +1,5 @@
 import { LitElement, html, css } from "../../lib/lit-all.min.js";
-import { UnprivilegedChromeStorageController } from "../util/chrome_storage_controller.mjs";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 
 const DAY = 24 * 60 * 60 * 1000;
 
@@ -18,7 +18,7 @@ export class CalendarNavButtons extends LitElement {
     }
   `;
 
-  execDayOffset = new UnprivilegedChromeStorageController(
+  execDayOffset = new ChromeStorageController(
     this,
     "calendarNav-execDayOffset",
     null

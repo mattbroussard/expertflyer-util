@@ -1,5 +1,5 @@
 import { LitElement, html } from "../../lib/lit-all.min.js";
-import { UnprivilegedChromeStorageController } from "../util/chrome_storage_controller.mjs";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 
 // Note: currently this code assumes the Flight Timetables page only, but it could be adjusted to work
 // for Awards and Availability pages.
@@ -110,7 +110,7 @@ export class SaveFilterButton extends LitElement {
     // Note: namespace passed as constructor arg because attributes are not yet
     // populated in properties by constructor time; see convo with Elliott on
     // 12/6/2022.
-    this.data = new UnprivilegedChromeStorageController(
+    this.data = new ChromeStorageController(
       this,
       `savedFilter-${namespace}`,
       null
@@ -140,7 +140,7 @@ export class RestoreFilterButton extends LitElement {
     // Note: namespace passed as constructor arg because attributes are not yet
     // populated in properties by constructor time; see convo with Elliott on
     // 12/6/2022.
-    this.data = new UnprivilegedChromeStorageController(
+    this.data = new ChromeStorageController(
       this,
       `savedFilter-${namespace}`,
       null

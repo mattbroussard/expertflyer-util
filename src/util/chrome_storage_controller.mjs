@@ -1,5 +1,8 @@
 import { newRandomId } from "./random_ids.mjs";
 
+// Stub that decides which of the other two controllers to use based on whether
+// we're running in a privileged environment that can use the chrome.storage API
+// or not. If not, we have to proxy calls through postMessage to chrome_storage_proxy.js
 export class ChromeStorageController {
   inner = null;
 
