@@ -77,9 +77,6 @@ export class NewAlertForm extends LitElement {
   endDateInput = createRef();
 
   static properties = {
-    narrow: {
-      type: Boolean,
-    },
     prefillData: {
       attribute: false,
     },
@@ -247,19 +244,6 @@ export class NewAlertForm extends LitElement {
       return null;
     }
 
-    const weekdays = html`
-      <input
-        type="text"
-        id="weekdays"
-        placeholder=${defaultWeekdays}
-        @input=${this.dateChanged}
-        value=${this.prefillData?.weekdays}
-        size="11"
-      />
-      (${days} day${days != 1 ? "s" : ""})
-    `;
-    // TODO: parenthesized days text is confusing, esp in narrow layout
-
     return html`
       <div class="row">
         Flight number & route:
@@ -291,12 +275,19 @@ export class NewAlertForm extends LitElement {
           value=${this.prefillData?.date ?? today}
           @input=${this.dateChanged}
         />
-        ${when(!this.narrow, () => weekdays)}
+        (${days} alert${days != 1 ? "s" : ""})
       </div>
-      ${when(
-        this.narrow,
-        () => html`<div class="row">Weekdays: ${weekdays}</div>`
-      )}
+      <div class="row">
+        Weekdays:
+        <input
+          type="text"
+          id="weekdays"
+          placeholder=${defaultWeekdays}
+          @input=${this.dateChanged}
+          value=${this.prefillData?.weekdays}
+          size="11"
+        />
+      </div>
       <div class="row">
         Class/Qty:
         <input

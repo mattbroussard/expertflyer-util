@@ -48,7 +48,6 @@ export class AddToQueuePopupButton extends LitElement {
       >
       <ef-utils-hover-box title="Add to EFUtils Queue" width="350">
         <ef-utils-new-alert-form
-          narrow="true"
           .prefillData=${this.prefillData}
           @submit=${this.onSubmit}
         ></ef-utils-new-alert-form>
