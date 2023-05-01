@@ -13,6 +13,13 @@ import { newRandomId } from "../util/random_ids.mjs";
 const weekdayRegex = /M|Th|T|W|F|Sa|Su/gi;
 const defaultWeekdays = "MTWThFSaSu";
 
+export function formatDateForDateInputValue(date) {
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(date.getDate()).padStart(2, "0")}`;
+}
+
 function isValidDate(date) {
   return !isNaN(date.getTime());
 }
@@ -73,6 +80,9 @@ export class NewAlertForm extends LitElement {
     narrow: {
       type: Boolean,
     },
+    prefillData: {
+      attribute: false,
+    },
     validated: {
       type: Boolean,
       state: true,
@@ -105,10 +115,7 @@ export class NewAlertForm extends LitElement {
     this.days = 1;
 
     const now = new Date();
-    this.today = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(
-      2,
-      "0"
-    )}-${String(now.getDate()).padStart(2, "0")}`;
+    this.today = formatDateForDateInputValue(now);
   }
 
   getFlightDetails() {
@@ -161,7 +168,7 @@ export class NewAlertForm extends LitElement {
     this.validate();
   }
 
-  submit() {
+  async submit() {
     if (!this.validated) {
       return;
     }
@@ -220,7 +227,16 @@ export class NewAlertForm extends LitElement {
       });
     }
 
-    this.entries.set([...this.entries.get(), ...entries]);
+    await this.entries.set([...this.entries.get(), ...entries]);
+
+    this.dispatchEvent(new CustomEvent("submit", { detail: entries }));
+  }
+
+  firstUpdated() {
+    super.firstUpdated();
+
+    // This is to allow the queue button to be enabled if the state is valid already from prefillData
+    this.validate();
   }
 
   render() {
@@ -237,10 +253,12 @@ export class NewAlertForm extends LitElement {
         id="weekdays"
         placeholder=${defaultWeekdays}
         @input=${this.dateChanged}
+        value=${this.prefillData?.weekdays}
         size="11"
       />
       (${days} day${days != 1 ? "s" : ""})
     `;
+    // TODO: parenthesized days text is confusing, esp in narrow layout
 
     return html`
       <div class="row">
@@ -250,6 +268,7 @@ export class NewAlertForm extends LitElement {
           placeholder="NH7 SFO-NRT"
           id="flightNum"
           size="14"
+          value=${this.prefillData?.flightNum}
           @input=${this.validate}
         />
       </div>
@@ -260,7 +279,7 @@ export class NewAlertForm extends LitElement {
           ${ref(this.startDateInput)}
           required
           min=${today}
-          value=${today}
+          value=${this.prefillData?.date ?? today}
           @input=${this.dateChanged}
         />
         -
@@ -269,7 +288,7 @@ export class NewAlertForm extends LitElement {
           ${ref(this.endDateInput)}
           required
           min=${today}
-          value=${today}
+          value=${this.prefillData?.date ?? today}
           @input=${this.dateChanged}
         />
         ${when(!this.narrow, () => weekdays)}
@@ -286,6 +305,7 @@ export class NewAlertForm extends LitElement {
           maxlength="1"
           size="2"
           id="classCode"
+          value=${this.prefillData?.classCode}
           @input=${this.validate}
         />
         <select id="quantityMode">
