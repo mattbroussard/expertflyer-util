@@ -43,7 +43,10 @@
         "src/highlight_availability/highlight_award_availability.js",
         "src/availability_results.js"
       ],
-      "css": ["src/highlight_availability/highlight_award_availability.css"]
+      "css": [
+        "src/highlight_availability/highlight_award_availability.css",
+        "src/alerts_queue_ui/queue_add_popup_button.css"
+      ]
     },
     {
       "matches": ["https://*.expertflyer.com/air/flightAvailabilityResults.do"],
@@ -52,7 +55,8 @@
         "src/util/inject_scripts.js",
         "src/calendar_nav/calendar_nav.js",
         "src/availability_results.js"
-      ]
+      ],
+      "css": ["src/alerts_queue_ui/queue_add_popup_button.css"]
     },
     {
       "matches": [

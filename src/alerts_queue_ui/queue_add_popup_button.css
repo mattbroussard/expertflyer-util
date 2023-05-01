@@ -1,0 +1,4 @@
+/* this applies only to the availability page; the awards page uses td.colOps instead of span */
+div.resultsContainer div.flightContainer span.colOps div.ops {
+  line-height: 12px;
+}
