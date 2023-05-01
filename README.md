@@ -12,6 +12,8 @@ Note: This extension is not affiliated with ExpertFlyer.
 
 2. In the form at the bottom of the page, specify a flight route (including origin and destination airports in the format of e.g. `NH7 SFO-NRT`), a date range, the [fare class code](https://www.expertflyer.com/sessionlessClassList.do), and quantity. Click Queue Alerts.
 
+(Note: As of version 0.10, this form can be accessed from the Flight Availability and Awards & Upgrades search result pages by clicking the 🤖 button)
+
 3. Click Start, then don't touch or open other ExpertFlyer tabs until the runner is done.
 
 Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The extension will not stop you from trying to make more than 200 extensions, though it does rate limit the form submissions.
@@ -53,3 +55,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.7: adds GCMap links and ability to save filter configuation on the Flight Timetables page
 - 0.8: adds previous/next calendar navigation buttons to award and availability search result pages
 - 0.9: adds ability to add prefix to alert names and set alerts for flights that operate only on certain weekdays
+- 0.10: adds the ability to add alerts to the queue from the award and availability search result pages; removes iframe
