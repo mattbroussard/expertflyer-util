@@ -7,6 +7,10 @@ function onChange(changes, areaName) {
 chrome.storage.onChanged.addListener(onChange);
 
 window.addEventListener("message", (event) => {
+  if (event.origin !== window.location.origin) {
+    return;
+  }
+
   const msg = event.data;
   if (msg.type === "ef-util-chrome-storage-get") {
     const { key, replyId } = msg;

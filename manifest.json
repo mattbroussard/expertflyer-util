@@ -28,7 +28,11 @@
     },
     {
       "matches": ["https://*.expertflyer.com/flightAlertList.do"],
-      "js": ["src/util/inject_scripts.js", "src/alerts_list.js"],
+      "js": [
+        "src/util/inject_scripts.js",
+        "src/util/chrome_storage_proxy.js",
+        "src/alerts_list.js"
+      ],
       "css": [
         "src/alerts_depaginate/depaginate.css",
         "src/alerts_multiselect/alerts_multiselect.css"

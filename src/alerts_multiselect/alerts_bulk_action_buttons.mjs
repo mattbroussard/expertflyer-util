@@ -7,12 +7,14 @@ import {
   when,
 } from "../../lib/lit-all.min.js";
 import { newRandomId } from "../util/random_ids.mjs";
+import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 
 export class BulkActionButtons extends LitElement {
   static properties = {
     message: { state: true },
   };
 
+  queueEntries = new ChromeStorageController(this, "alerts-alertQueue", []);
   queueCheckbox = createRef();
 
   constructor() {
@@ -42,7 +44,7 @@ export class BulkActionButtons extends LitElement {
 
     if (this.queueCheckbox.value.checked) {
       const batchId = newRandomId();
-      const queueEntries = selected.map((check) => {
+      const newQueueEntries = selected.map((check) => {
         // https://yui.github.io/yui2/docs/yui_2.9.0_full/docs/YAHOO.widget.Record.html
         const record = check.yuiRecord;
         const bean = record.getData("bean");
@@ -61,10 +63,7 @@ export class BulkActionButtons extends LitElement {
         };
       });
 
-      window.postMessage(
-        { type: "ef-util-add-alerts-to-queue", alerts: queueEntries },
-        "*"
-      );
+      this.queueEntries.set([...this.queueEntries.get(), ...newQueueEntries]);
     }
 
     // Async, not awaited; errors handled internally
