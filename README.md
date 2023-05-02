@@ -29,6 +29,7 @@ Remember to be mindful of ExpertFlyer's limit of 200 active flight alerts. The e
 - On the Flight Timetables page, you can easily save and restore filter settings in a single click (useful when switching between endpoints)
 - On the Awards & Upgrades and Flight Availability search result pages, you can navigate to previous/next date ranges with a single click
 - On the Flight Timetables page, you can view individual flights or the whole page worth of flights on GCMap
+- On the Flight Timetables page, you can filter by some additional properties: origin/destination country/state, number of stops, flight frequency
 
 ## Troubleshooting
 
@@ -56,3 +57,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.8: adds previous/next calendar navigation buttons to award and availability search result pages
 - 0.9: adds ability to add prefix to alert names and set alerts for flights that operate only on certain weekdays
 - 0.10: adds the ability to add alerts to the queue from the award and availability search result pages; removes iframe
+- 0.11: adds the ability to filter the timetable page by nonstops, daily flights, and origin/destination countries/states
