@@ -2,3 +2,22 @@ ef-utils-restore-filter-button,
 ef-utils-save-filter-button {
   margin-left: 10px;
 }
+
+.ef-utils-restore-filter-menu {
+  text-align: left;
+  width: 100%;
+}
+
+.ef-utils-restore-filter-menu-button {
+  text-align: left;
+  width: calc(50% - 10px);
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ef-utils-restore-filter-menu-button pre {
+  font-family: inherit;
+}

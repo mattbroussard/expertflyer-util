@@ -3,7 +3,9 @@ import { LitElement, html, css, styleMap } from "../../lib/lit-all.min.js";
 // Imitates the styling and behavior of EF's popups
 export class HoverBox extends LitElement {
   static properties = {
-    title: {
+    // This can't be named "title" because otherwise it'll get treated like HTML "title" and the entire
+    // hover box contents get a tooltip
+    boxTitle: {
       type: String,
     },
     width: {
@@ -61,7 +63,7 @@ export class HoverBox extends LitElement {
     this.left = 0;
 
     // Can be overridden with attributes
-    this.title = "Alert";
+    this.boxTitle = "Alert";
     this.width = 250;
   }
 
@@ -140,7 +142,7 @@ export class HoverBox extends LitElement {
               />
             </a>
           </div>
-          ${this.title}
+          ${this.boxTitle}
         </div>
         <div class="hoverBoxRow">
           <slot></slot>

@@ -1,5 +1,7 @@
 import { LitElement, html } from "../../lib/lit-all.min.js";
 import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
+import "../../lib/lodash.min.js";
+import "../util/hover_box.mjs";
 
 // Note: currently this code assumes the Flight Timetables page only, but it could be adjusted to work
 // for Awards and Availability pages.
@@ -66,6 +68,13 @@ function applyFilters(filterData) {
     check.checked = checkedByDefault;
   });
 
+  // Enable all bucket checkboxes (to clear any previously set filter)
+  Array.from(
+    filterPanel.querySelectorAll("input[type=checkbox][name=showBucket]")
+  ).forEach((check) => {
+    check.checked = true;
+  });
+
   for (const { name, className, mode, values } of filterData) {
     if (name !== "showBucket") {
       const check = filterPanel.querySelector(
@@ -110,6 +119,48 @@ function filterDataToString(filterData) {
     .join("\n");
 }
 
+// Since filters are displayed in two columns, this allows 3 rows of them
+const mruLength = 6;
+
+function loadFiltersMRU(storageController) {
+  let filterData = storageController.get();
+  if (!filterData || filterData.length == 0) {
+    return [];
+  }
+
+  // Each filterData is an array, but the top-level storage field is also an array. Since there could
+  // be old data stored from when we supported only one filter, we need to look down into the array to tell
+  // if we're in that old case.
+  if (!(filterData[0] instanceof Array)) {
+    filterData = [filterData];
+  }
+
+  return filterData;
+}
+
+function pushFiltersMRU(storageController, newFilterData) {
+  let filterData = [...loadFiltersMRU(storageController)];
+
+  // If the item already exists, we're just bumping it to the most-recently used spot, so remove
+  // it here and it'll be prepended again below
+  const existingIdx = _.findIndex(filterData, (fd) =>
+    _.isEqual(newFilterData, fd)
+  );
+  if (existingIdx != -1) {
+    filterData.splice(existingIdx, 1);
+  }
+
+  // Prepend new item
+  filterData.unshift(newFilterData);
+
+  // Trim to max length
+  if (filterData.length > mruLength) {
+    filterData.splice(mruLength, filterData.length - mruLength);
+  }
+
+  return storageController.set(filterData);
+}
+
 export class SaveFilterButton extends LitElement {
   constructor(namespace) {
     super();
@@ -131,11 +182,13 @@ export class SaveFilterButton extends LitElement {
     event.stopPropagation();
 
     const filterData = getFiltersFromDOM();
-    this.data.set(filterData);
+    pushFiltersMRU(this.data, filterData);
   }
 
   render() {
-    return html` <button @click=${this.onClick}>Save Filter</button> `;
+    return html`
+      <button @click=${this.onClick}>Save Filter for Later</button>
+    `;
   }
 }
 customElements.define("ef-utils-save-filter-button", SaveFilterButton);
@@ -155,27 +208,44 @@ export class RestoreFilterButton extends LitElement {
     );
   }
 
-  onClick() {
-    const filterData = this.data.get();
-    if (filterData === null) {
-      return;
-    }
-
+  onClick = (filterData) => () => {
+    this.hoverBox.hide();
     applyFilters(filterData);
+    pushFiltersMRU(this.data, filterData);
+  };
+
+  openMenu(ev) {
+    this.hoverBox.show(ev);
+  }
+
+  get hoverBox() {
+    return this.renderRoot.querySelector("ef-utils-hover-box");
   }
 
   render() {
-    const filterData = this.data.get();
-    if (filterData === null) {
+    const filters = loadFiltersMRU(this.data);
+    if (filters.length == 0) {
       return null;
     }
 
-    return html`<a
-      href="javascript:void(0);"
-      @click=${this.onClick}
-      title=${`Restore Saved Filter:\n\n${filterDataToString(filterData)}`}
-      >Restore Saved Filter</a
-    >`;
+    return html`<a href="javascript:void(0);" @click=${this.openMenu}
+        >Restore Saved Filter</a
+      ><ef-utils-hover-box boxtitle="Choose filter to restore" width="400">
+        <div class="ef-utils-restore-filter-menu">
+          ${filters.map(
+            (filterData) =>
+              // Note: have to specify type=button because this ends up nested inside an EF form that
+              // we don't want to submit
+              html`<button
+                type="button"
+                class="ef-utils-restore-filter-menu-button"
+                @click=${this.onClick(filterData)}
+              >
+                <pre>${filterDataToString(filterData)}</pre>
+              </button>`
+          )}
+        </div>
+      </ef-utils-hover-box>`;
   }
 
   // Don't use shadow DOM; we want our button to be styled the same as EF's button adjacent to it.
