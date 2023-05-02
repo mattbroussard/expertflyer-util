@@ -93,6 +93,7 @@
     {
       "resources": [
         "lib/lit-all.min.js",
+        "lib/lodash.min.js",
         "src/util/disable_lit_warning.js",
         "src/alerts_depaginate/depaginate.js",
         "src/alerts_multiselect/alerts_multiselect.mjs",

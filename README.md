@@ -40,7 +40,7 @@ For this simple browser extension I wanted to avoid the need for any compilation
 
 ## Acknowledgements
 
-This extension is not affiliated with ExpertFlyer. The open source framework [Lit](https://lit.dev/) is used.
+This extension is not affiliated with ExpertFlyer. The open source libraries [Lit](https://lit.dev/) and [Lodash](https://lodash.com/) are used.
 
 This extension is provided "AS IS". The developer makes no warranties, express or implied, and hereby disclaims all implied warranties, including any warranty of merchantability and warranty of fitness for a particular purpose.
 
