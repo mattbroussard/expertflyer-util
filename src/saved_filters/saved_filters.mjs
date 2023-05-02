@@ -27,6 +27,11 @@ function getFiltersFromDOM() {
       (chk) => chk.value
     );
 
+    // Don't add entries that say "except []" because they don't do anything
+    if (mode == "except" && values.length == 0) {
+      continue;
+    }
+
     entries.push({ name: "showBucket", className: type, mode, values });
   }
 

@@ -1,4 +1,32 @@
 import { LitElement, html } from "../../lib/lit-all.min.js";
+import "../../lib/lodash.min.js";
+
+const localitySections = [
+  {
+    name: "departCountry",
+    title: "Departure countries:",
+    segmentKey: "departAirportLocation",
+    parser: parseCountry,
+  },
+  {
+    name: "departState",
+    title: "Departure states:",
+    segmentKey: "departAirportLocation",
+    parser: parseState,
+  },
+  {
+    name: "arriveCountry",
+    title: "Arrival countries:",
+    segmentKey: "arriveAirportLocation",
+    parser: parseCountry,
+  },
+  {
+    name: "arriveState",
+    title: "Arrival states:",
+    segmentKey: "arriveAirportLocation",
+    parser: parseState,
+  },
+];
 
 export class ExtraTimetableFilters extends LitElement {
   onInput() {
@@ -6,7 +34,72 @@ export class ExtraTimetableFilters extends LitElement {
     filterFlights();
   }
 
+  getLocalities(segmentKey, parser) {
+    const flights = window.myDataSource?.liveData;
+    if (!flights) {
+      return [];
+    }
+
+    let ret = _.chain(flights)
+      .map("segmentList")
+      .flatten()
+      .map(segmentKey)
+      .map(parser)
+      .uniq()
+      .sortBy()
+      .value();
+
+    // move "Unspecified" to the end if it exists
+    const unspecIdx = ret.indexOf("Unspecified");
+    if (unspecIdx != -1) {
+      ret = ret.concat(ret.splice(unspecIdx, 1));
+    }
+
+    return ret;
+  }
+
+  selectAll = (name, checked) => () => {
+    Array.from(
+      document.querySelectorAll(
+        `#filterPanel input[type=checkbox][name=showBucket].${name}`
+      )
+    ).forEach((check) => {
+      check.checked = checked;
+    });
+
+    // Call EF's filterFlights function
+    filterFlights();
+  };
+
   render() {
+    const localities = localitySections.map(
+      ({ name, title, segmentKey, parser }) => {
+        const values = this.getLocalities(segmentKey, parser);
+        return html`<div class="ef-utils-locality-section">
+          ${title}
+          <ul>
+            ${values.map(
+              (value) => html`<li>
+                <input
+                  type="checkbox"
+                  name="showBucket"
+                  id="showBucket"
+                  class=${name}
+                  value=${value}
+                  checked
+                  @input=${this.onInput}
+                />${value}
+              </li>`
+            )}
+          </ul>
+          <a @click=${this.selectAll(name, true)}>Select All</a>
+          <a @click=${this.selectAll(name, false)} style="margin-left: 10px;"
+            >Deselect All</a
+          >
+        </div>`;
+      }
+    );
+
     return html`
       <td class="fe">&nbsp;</td>
       <td valign="top" class="fl"><label>EFUtils Options:</label></td>
@@ -31,11 +124,13 @@ export class ExtraTimetableFilters extends LitElement {
             Only show daily flights
           </li>
         </ul>
+        ${localities}
       </td>
     `;
   }
 
-  // We use EF's markup and styling, so can't use shadow dom
+  // We use EF's markup and styling, so can't use shadow dom.
+  // Also, inputs need to be visible to selectors in filterResults and saved_filters.mjs
   createRenderRoot() {
     return this;
   }
@@ -45,6 +140,20 @@ customElements.define(
   ExtraTimetableFilters
 );
 
+function parseCountry(locationStr) {
+  const parts = locationStr.split(",");
+  return parts[parts.length - 1].trim();
+}
+
+function parseState(locationStr) {
+  const parts = locationStr.split(",");
+  if (parts.length <= 2) {
+    return "Unspecified";
+  }
+
+  return parts[parts.length - 2].trim();
+}
+
 function filterResults(results) {
   const requireNonstops = document.querySelector(
     "div.filterPanel input#requireNonstop"
@@ -52,6 +161,17 @@ function filterResults(results) {
   const requireDaily = document.querySelector(
     "div.filterPanel input#requireDaily"
   ).checked;
+
+  const localities = localitySections.map((sec) => ({
+    ...sec,
+    exceptedValues: Array.from(
+      document
+        .querySelector("div.filterPanel")
+        .querySelectorAll(`input#showBucket.${sec.name}`)
+    )
+      .filter((check) => !check.checked)
+      .map((check) => check.value),
+  }));
 
   return results.filter((res) => {
     if (requireNonstops) {
@@ -65,6 +185,14 @@ function filterResults(results) {
 
     if (requireDaily && res.operatingDays != "Daily") {
       return false;
+    }
+
+    for (const { segmentKey, parser, exceptedValues } of localities) {
+      for (const segment of res.segmentList) {
+        if (exceptedValues.includes(parser(segment[segmentKey]))) {
+          return false;
+        }
+      }
     }
 
     return true;

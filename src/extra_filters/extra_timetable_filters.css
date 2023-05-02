@@ -9,4 +9,13 @@ ef-utils-extra-timetable-filters td.fd ul {
 
 ef-utils-extra-timetable-filters td.fd ul li {
   display: inline-block;
+  margin-right: 4px;
+}
+
+ef-utils-extra-timetable-filters td.fd ul li input[type="checkbox"] {
+  margin-right: 4px;
+}
+
+.ef-utils-locality-section {
+  margin-top: 12px;
 }
