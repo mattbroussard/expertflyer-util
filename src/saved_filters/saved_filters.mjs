@@ -5,7 +5,7 @@ import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 // for Awards and Availability pages.
 // Those have different callback methods when something changes and use IDs instead of classes.
 
-const defaultOffChecks = ["requireNonstop"];
+const defaultOffChecks = ["requireNonstop", "requireDaily"];
 
 function getFiltersFromDOM() {
   const filterPanel = document.querySelector("#filterPanel");

@@ -2,6 +2,7 @@ import { LitElement, html } from "../../lib/lit-all.min.js";
 
 export class ExtraTimetableFilters extends LitElement {
   onInput() {
+    // Call EF's filterFlights function
     filterFlights();
   }
 
@@ -20,6 +21,15 @@ export class ExtraTimetableFilters extends LitElement {
             />
             Only show nonstops
           </li>
+          <li>
+            <input
+              type="checkbox"
+              name="requireDaily"
+              id="requireDaily"
+              @input=${this.onInput}
+            />
+            Only show daily flights
+          </li>
         </ul>
       </td>
     `;
@@ -36,9 +46,11 @@ customElements.define(
 );
 
 function filterResults(results) {
-  console.log(results);
   const requireNonstops = document.querySelector(
     "div.filterPanel input#requireNonstop"
+  ).checked;
+  const requireDaily = document.querySelector(
+    "div.filterPanel input#requireDaily"
   ).checked;
 
   return results.filter((res) => {
@@ -49,6 +61,10 @@ function filterResults(results) {
       if (res.segmentList[0].numStops > 0) {
         return false;
       }
+    }
+
+    if (requireDaily && res.operatingDays != "Daily") {
+      return false;
     }
 
     return true;
