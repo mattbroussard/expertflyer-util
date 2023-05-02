@@ -78,7 +78,8 @@
       ],
       "css": [
         "src/gcmap_buttons/gcmap_buttons.css",
-        "src/saved_filters/saved_filters.css"
+        "src/saved_filters/saved_filters.css",
+        "src/extra_filters/extra_timetable_filters.css"
       ]
     }
   ],
@@ -106,6 +107,7 @@
         "src/alerts_queue_ui/alerts_queue_ui.mjs",
         "src/alerts_form_filler/alert_filler_status_display.mjs",
         "src/gcmap_buttons/gcmap_buttons.mjs",
+        "src/extra_filters/extra_timetable_filters.mjs",
         "images/gcmap.ico",
         "src/saved_filters/saved_filters.mjs",
         "src/util/chrome_storage_controller.mjs",

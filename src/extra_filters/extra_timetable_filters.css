@@ -1,0 +1,12 @@
+ef-utils-extra-timetable-filters {
+  display: table-row;
+}
+
+ef-utils-extra-timetable-filters td.fd ul {
+  margin: 0;
+  padding: 0;
+}
+
+ef-utils-extra-timetable-filters td.fd ul li {
+  display: inline-block;
+}

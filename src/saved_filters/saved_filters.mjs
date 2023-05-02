@@ -5,6 +5,8 @@ import { ChromeStorageController } from "../util/chrome_storage_controller.mjs";
 // for Awards and Availability pages.
 // Those have different callback methods when something changes and use IDs instead of classes.
 
+const defaultOffChecks = ["requireNonstop"];
+
 function getFiltersFromDOM() {
   const filterPanel = document.querySelector("#filterPanel");
 
@@ -32,15 +34,15 @@ function getFiltersFromDOM() {
     "input[type=checkbox]:not([name=showBucket])"
   );
   for (const check of oneOffChecks) {
-    // only allow "except" mode for the one-off checks, which are all on by default.
-    if (check.checked) {
+    const checkedByDefault = defaultOffChecks.indexOf(check.name) == -1;
+    if (check.checked == checkedByDefault) {
       continue;
     }
 
     entries.push({
       name: check.name,
       className: "",
-      mode: "except",
+      mode: check.checked ? "only" : "except",
       values: [],
     });
   }
@@ -51,11 +53,12 @@ function getFiltersFromDOM() {
 function applyFilters(filterData) {
   const filterPanel = document.querySelector("#filterPanel");
 
-  // Enable all one-off checkboxes not excepted by saved rules
+  // Set all one-off checkboxes not specified by saved rules
   Array.from(
     filterPanel.querySelectorAll("input[type=checkbox]:not([name=showBucket])")
   ).forEach((check) => {
-    check.checked = true;
+    const checkedByDefault = defaultOffChecks.indexOf(check.name) == -1;
+    check.checked = checkedByDefault;
   });
 
   for (const { name, className, mode, values } of filterData) {
@@ -66,7 +69,7 @@ function applyFilters(filterData) {
       if (!check) {
         continue;
       }
-      check.checked = false;
+      check.checked = mode == "only";
     } else {
       const checks = Array.from(
         filterPanel.querySelectorAll(
@@ -97,7 +100,7 @@ function filterDataToString(filterData) {
         return `${className}: ${mode} ${values.join(",")}`;
       }
 
-      return `${name}: NO`;
+      return `${name}: ${mode == "only" ? "YES" : "NO"}`;
     })
     .join("\n");
 }
