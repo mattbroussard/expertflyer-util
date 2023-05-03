@@ -58,3 +58,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.9: adds ability to add prefix to alert names and set alerts for flights that operate only on certain weekdays
 - 0.10: adds the ability to add alerts to the queue from the award and availability search result pages; removes iframe
 - 0.11: adds the ability to filter the timetable page by nonstops, daily flights, and origin/destination countries/states
+- 0.12: extends the saved filter feature on the timetables page to support up to 6 saved filters
