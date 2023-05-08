@@ -119,7 +119,10 @@ export class NewAlertForm extends LitElement {
     const text = this.renderRoot
       .querySelector("#flightNum")
       .value.toUpperCase();
-    const matches = /^([A-Z]{2})(\d+) ([A-Z]{3})-([A-Z]{3})$/.exec(text);
+    // Note: doesn't allow fully numeric IATA airline code even though I think that is allowed?
+    // Couldn't find an instance of one actually existing.
+    const matches =
+      /^([A-Z]{2}|\d[A-Z]|[A-Z]\d)(\d+) ([A-Z]{3})-([A-Z]{3})$/.exec(text);
     if (!matches) {
       return null;
     }
