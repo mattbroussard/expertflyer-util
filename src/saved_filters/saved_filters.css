@@ -20,4 +20,6 @@ ef-utils-save-filter-button {
 
 .ef-utils-restore-filter-menu-button pre {
   font-family: inherit;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
 }
