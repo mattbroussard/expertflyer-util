@@ -2,3 +2,8 @@
 div.resultsContainer div.flightContainer span.colOps div.ops {
   line-height: 12px;
 }
+
+/* add z-index to EF's own popups so they stack above position:relative ef-utils buttons */
+div.hoverBoxContainer {
+  z-index: 1;
+}
