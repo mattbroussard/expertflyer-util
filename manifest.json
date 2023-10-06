@@ -110,6 +110,8 @@
         "src/gcmap_buttons/gcmap_buttons.mjs",
         "src/extra_filters/extra_timetable_filters.mjs",
         "images/gcmap.ico",
+        "images/tab-left-green.png",
+        "images/tab-right-green.png",
         "src/saved_filters/saved_filters.mjs",
         "src/util/chrome_storage_controller.mjs",
         "src/calendar_nav/calendar_nav_buttons.mjs"

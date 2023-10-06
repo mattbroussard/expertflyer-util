@@ -19,3 +19,23 @@
   background-color: #00ad14;
   color: white;
 }
+
+/* inactive tabs with availability */
+ul.tabset li[data-ef-utils-award-avail-tab-highlight]:not(.current) {
+  /* chrome-specific; can't use relative URL because CSS is injected, not linked, so would be relative to EF page */
+  background: url("chrome-extension://__MSG_@@extension_id__/images/tab-left-green.png")
+    no-repeat left top;
+}
+ul.tabset li[data-ef-utils-award-avail-tab-highlight]:not(.current) a {
+  background: url("chrome-extension://__MSG_@@extension_id__/images/tab-right-green.png")
+    no-repeat right top;
+}
+
+/* active tabs with availability */
+ul.tabset li.current[data-ef-utils-award-avail-tab-highlight] a {
+  color: #00ad14;
+  font-weight: bold;
+}
+ul.tabset li.current[data-ef-utils-award-avail-tab-highlight] a:hover {
+  color: #00ad14;
+}
