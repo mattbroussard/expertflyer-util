@@ -1,7 +1,7 @@
 {
   "name": "Utilities for ExpertFlyer",
   "description": "Various utilities that make ExpertFlyer easier to use for power users.",
-  "version": "0.13",
+  "version": "0.14",
   "manifest_version": 3,
   "permissions": ["storage"],
   "content_scripts": [
