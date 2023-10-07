@@ -4,6 +4,7 @@ injectDataScriptTag("ef-util-gcmap-icon-url", { gcmapIcon });
 
 injectScripts([
   "src/util/disable_lit_warning.js",
+  "src/timetable_export/timetable_export.mjs",
   "src/gcmap_buttons/gcmap_buttons.mjs",
   "src/extra_filters/extra_timetable_filters.mjs",
   "src/saved_filters/saved_filters.mjs",

@@ -78,6 +78,7 @@
       ],
       "css": [
         "src/gcmap_buttons/gcmap_buttons.css",
+        "src/timetable_export/timetable_export.css",
         "src/saved_filters/saved_filters.css",
         "src/extra_filters/extra_timetable_filters.css"
       ]
@@ -114,6 +115,7 @@
         "images/tab-right-green.png",
         "src/saved_filters/saved_filters.mjs",
         "src/util/chrome_storage_controller.mjs",
+        "src/timetable_export/timetable_export.mjs",
         "src/calendar_nav/calendar_nav_buttons.mjs"
       ],
       "matches": ["https://*.expertflyer.com/*"]
