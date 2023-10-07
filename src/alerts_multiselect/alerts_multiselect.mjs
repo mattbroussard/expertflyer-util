@@ -35,6 +35,11 @@ function addBulkActionButtons() {
   const container = document.querySelector("#flightAlertListPaginator");
   if (container) {
     const btn = document.createElement("ef-utils-alert-bulk-action-buttons");
+
+    // TODO: this is fragile because the paginator UI rerenders itself sometimes and blows away our
+    // UI. This seems especially likely to happen if the table is initially empty (though it could
+    // become nonempty by changing filters). We should probably try to inject UI as a sibling rather
+    // than child, but it's easier to style this way.
     container.appendChild(btn);
   }
 }
