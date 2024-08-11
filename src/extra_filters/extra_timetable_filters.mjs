@@ -147,11 +147,19 @@ customElements.define(
 );
 
 function parseCountry(locationStr) {
+  if (!locationStr) {
+    return "Unspecified";
+  }
+
   const parts = locationStr.split(",");
   return parts[parts.length - 1].trim();
 }
 
 function parseState(locationStr) {
+  if (!locationStr) {
+    return "Unspecified";
+  }
+
   const parts = locationStr.split(",");
   if (parts.length <= 2) {
     return "Unspecified";
