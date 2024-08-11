@@ -1,7 +1,7 @@
 import { LitElement, html } from "../../lib/lit-all.min.js";
 import "../../lib/lodash.min.js";
 
-const localitySections = [
+const fieldDefinitions = [
   {
     name: "departCountry",
     title: "Departure countries:",
@@ -26,6 +26,12 @@ const localitySections = [
     segmentKey: "arriveAirportLocation",
     parser: parseState,
   },
+  {
+    name: "equipment",
+    title: "Aircraft:",
+    segmentKey: "equipment",
+    parser: parseEquipment,
+  },
 ];
 
 export class ExtraTimetableFilters extends LitElement {
@@ -34,7 +40,7 @@ export class ExtraTimetableFilters extends LitElement {
     filterFlights();
   }
 
-  getLocalities(segmentKey, parser) {
+  getPossibleFieldValues(segmentKey, parser) {
     const flights = window.myDataSource?.liveData;
     if (!flights) {
       return [];
@@ -72,10 +78,10 @@ export class ExtraTimetableFilters extends LitElement {
   };
 
   render() {
-    const localities = localitySections.map(
+    const fieldFilterSections = fieldDefinitions.map(
       ({ name, title, segmentKey, parser }) => {
-        const values = this.getLocalities(segmentKey, parser);
-        return html`<div class="ef-utils-locality-section">
+        const values = this.getPossibleFieldValues(segmentKey, parser);
+        return html`<div class="ef-utils-field-filter-section">
           ${title}
           <ul>
             ${values.map(
@@ -124,7 +130,7 @@ export class ExtraTimetableFilters extends LitElement {
             Only show daily flights
           </li>
         </ul>
-        ${localities}
+        ${fieldFilterSections}
       </td>
     `;
   }
@@ -154,6 +160,14 @@ function parseState(locationStr) {
   return parts[parts.length - 2].trim();
 }
 
+function parseEquipment(equipmentList) {
+  if (!equipmentList || equipmentList.length == 0) {
+    return "Unspecified";
+  }
+
+  return equipmentList[0].equipmentCode;
+}
+
 function filterResults(results) {
   const requireNonstops = document.querySelector(
     "div.filterPanel input#requireNonstop"
@@ -162,7 +176,7 @@ function filterResults(results) {
     "div.filterPanel input#requireDaily"
   ).checked;
 
-  const localities = localitySections.map((sec) => ({
+  const fields = fieldDefinitions.map((sec) => ({
     ...sec,
     exceptedValues: Array.from(
       document
@@ -187,7 +201,7 @@ function filterResults(results) {
       return false;
     }
 
-    for (const { segmentKey, parser, exceptedValues } of localities) {
+    for (const { segmentKey, parser, exceptedValues } of fields) {
       for (const segment of res.segmentList) {
         if (exceptedValues.includes(parser(segment[segmentKey]))) {
           return false;
