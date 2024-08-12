@@ -62,3 +62,4 @@ This extension is provided "AS IS". The developer makes no warranties, express o
 - 0.13: CSS fix for z-ordering of "add to queue" button on award and availability pages
 - 0.14: tabbed view of awards page now highlights the tab in green if any results within it have availability
 - 0.15: add Export JSON button to Timetables page
+- 0.16: add aircraft filter, fix handling of undefined fields on timetable page
