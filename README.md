@@ -1,5 +1,7 @@
 # Utilities for ExpertFlyer
 
+**⚠️ July 2025:** ExpertFlyer has released an updated UI that appears to be based on React and breaks almost all functionality in this extension, which depended heavily on interacting with YUI components. Fixing things would likely amount to a rewrite, so it's unlikely I do so anytime soon.
+
 [Install from Chrome Web Store](https://chrome.google.com/webstore/detail/utilities-for-expertflyer/pkadldhlfkfikppkplbpdbpchlpkkelo)
 
 Utilities for automating repetitive manual actions in [ExpertFlyer](https://www.expertflyer.com/), namely creating flight alerts for multiple dates at once.
